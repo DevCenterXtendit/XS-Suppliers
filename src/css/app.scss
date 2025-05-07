@@ -1,1 +1,32 @@
 // app global css in SCSS form
+body {
+  * {
+      outline: none;
+  }
+  // font-family: 'Poppins', sans-serif;
+  // font-weight: 200;
+}
+
+//light mode
+.body--light {
+  background-color: $light-page;
+
+  .bg-topbar {
+    background-color: #212631;
+  }
+}
+
+//dark mode
+.body--dark {
+  --q-primary: #{$d-primary};
+  --q-secondary: #{$d-secondary};
+  --q-accent: #{$d-accent};
+  --q-positive: #{$d-positive};
+  --q-negative: #{$d-negative};
+  --q-info: #{$d-info};
+  --q-warning: #{$d-warning};
+
+  .bg-topbar {
+    background-color: #212631;
+  }
+}
