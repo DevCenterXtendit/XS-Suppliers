@@ -1,33 +1,48 @@
 <template>
-  <q-page class="q-pa-md">
-    <div class="text-h6">Usuarios</div>
-
-    <q-card flat class="row q-pa-md q-my-md">
-        <div class="col-12 col-md-3">
+   <q-page class="q-pa-md">
+    <div class="text-h6">Sociedades FI</div>
+    <q-card flat class="q-pa-md q-my-md">
+      <div class="row q-gutter-md">
+         <div class="col-12 col-sm-4 col-md-3">
           <q-select
-            v-model="userType"
-            @filter="onSelectedUserType"
-            :options="userTypes"
+            v-model="currentCustomerId"
+            @update:model-value="onSelectedCustomer"
+            :options="customers"
             dense
-            label="Tipo de Usuario"
+            emit-value
+            label="Seleccione Cliente"
             map-options
             outlined
             option-label="name"
             option-value="id"
-            use-input
           >
-            <template v-slot:prepend>
-              <q-icon name="people" />
-            </template>
           </q-select>
         </div>
+        <div class="col-12 col-sm-4 col-md-3">
+          <q-select
+            v-model="currentSocietyGlId"
+            @update:model-value="onSelectedSocietyGl"
+            :disable="!currentCustomerId"
+            :options="societiesGl"
+            dense
+            emit-value
+            label="Seleccione Sociedad GL"
+            map-options
+            outlined
+            option-label="name"
+            option-value="id"
+          >
+          </q-select>
+        </div>
+      </div>
     </q-card>
     <q-card flat
       class="row q-pa-md q-my-sm"
     >
       <div class="col-4 col-sm-6">
         <q-btn
-          @click="addUser"
+          @click="addSocietyFi"
+          :disable="!currentSocietyGlId"
           color="primary"
           icon="add_circle_outline"
           label="Añadir"
@@ -57,29 +72,33 @@
         <q-table
           flat
           :filter="filter"
-          :rows="users"
+          :rows="societiesFi"
           :columns="columns"
           row-key="id"
         >
         <template v-slot:body-cell-status="props">
           <q-td :props="props">
-            <q-badge class="q-px-sm" rounded
-              :color="props.value ? 'positive' : 'negative'"
-              :label="props.value ? 'Activo' : 'Inactivo' " />
+            <q-toggle
+              v-model="props.row.isActive"
+              size="sm"
+            />
           </q-td>
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
-            <q-btn dense
-              flat
+            <q-btn
+              @click="getSocietyFi(props.row.id)"
+              dense
               color="grey-7"
-              icon="edit"
-              @click="getUser(props.row.id)"
-            />
-            <q-btn dense
               flat
+              icon="edit"
+            />
+            <q-btn
+              @click="removeSpecialtyFi(props.row.id)"
+              dense
               color="grey-7"
               class="q-ml-sm"
+              flat
               icon="delete"
             />
           </q-td>
@@ -87,56 +106,41 @@
         </q-table>
       </q-card-section>
     </q-card>
+    <societyFi-form/>
   </q-page>
-  <user-form
-    v-model:data="user"
-    v-model:open="openUserForm"
-    :companies="companies"
-    @onCompanyTypeChanged="getCompanies"
-    @onSubmit="handleSaveUser"
-  />
 </template>
 
 <script setup>
 import {ref, onMounted } from 'vue';
-import userTypes from 'src/core/constants/userTypes';
-//components
-import userForm from 'src/components/user/userForm.vue';
-//composables
-import useUser from 'src/core/composables/user/useUser';
+import useSocietyFi from 'src/core/composables/societyFI/useSocietyFI';
+import societyFiForm from 'src/components/societyFi/societyFiForm.vue';
 
 const {
-  users,
-  user,
-  companies,
-  openUserForm,
-  getUsers,
-  getUser,
-  getCompanies,
-  addUser,
-  handleSaveUser,
-} = useUser();
+  customers,
+  societiesGl,
+  currentCustomerId,
+  currentSocietyGlId,
+  societiesFi,
+  getCustomers,
+  onSelectedCustomer,
+  onSelectedSocietyGl,
+  getSocietyFi,
+  addSocietyFi,
+  removeSpecialtyFi
+
+} = useSocietyFi();
 
 let filter = ref('');
 
 const columns = [
+  { name: 'code', label: 'ID', align: 'left', field: 'code' },
   { name: 'name', label: 'NOMBRE', align: 'left', field: 'name'},
-  { name: 'lastNames', label: 'APELLIDOS', align: 'left', field: 'lastNames'},
-  { name: 'email', label: 'EMAIL', align: "left", field: 'email' },
   { name: 'status', label: 'ESTATUS', align: "center", field: 'isActive' },
   { name: 'actions', label: 'ACCIONES', align: 'center' , field: 'actions'},
 ]
 
-const userType = ref(null);
-
-const onSelectedUserType = (userType) => {
-  console.log('se filtra por tipo de usuario', userType);
-}
-
-onMounted(() => {
-   getUsers();
+onMounted(async() => {
+  await getCustomers();
 })
 
-
 </script>
-

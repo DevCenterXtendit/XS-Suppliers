@@ -11,8 +11,8 @@ export const handleErrorResponse = (error) => {
 
     switch (error.response.status) {
       case 400:
-          icon = ''
-          color = 'warning'
+        icon = ''
+        color = 'warning'
         break;
       case 500:
         icon = 'warning'
@@ -35,5 +35,7 @@ export const handleErrorResponse = (error) => {
     icon: icon
   });
 
+
+  return Promise.reject(error);
 }
 

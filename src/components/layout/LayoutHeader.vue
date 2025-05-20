@@ -7,6 +7,16 @@
         icon="menu"
         @click="$emit('toggle-drawer')"
       />
+      <q-toolbar-title>
+        <router-link to="/" class="flex items-center cursor-pointer" style="text-decoration: none;">
+          <q-img
+            src="../../assets/logo-xtendit-white.png"
+            style="max-height: 50px; max-width: 120px"
+            contain
+          />
+        </router-link>
+      </q-toolbar-title>
+
       <q-space></q-space>
       <theme-btn class="q-mr-xs"></theme-btn>
       <q-btn
@@ -37,5 +47,7 @@
 <script setup>
 //components
 import ThemeBtn from '../../components/common/ThemeBtn.vue';
+
+
 
 </script>
