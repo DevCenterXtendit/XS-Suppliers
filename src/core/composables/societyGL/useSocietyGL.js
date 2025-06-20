@@ -5,7 +5,7 @@ import { customerService } from 'src/core/services/customerService';
 const currentCustomerId = ref(null);
 const societyGl = reactive({});
 const societiesGl = ref([]);
-const openSocietyGlForm = ref(0);
+const openSocietyGlForm = ref(false);
 
 const  useSocietyGL = () =>  {
   const customers = ref([]);
@@ -41,7 +41,8 @@ const  useSocietyGL = () =>  {
 
   const addSocietyGl = () => {
     Object.assign(societyGl, initSocietyGl());
-    societyGl.customerId = currentCustomerId;
+    societyGl.customerId = currentCustomerId.value;
+    console.log(societyGl);
     openSocietyGlForm.value = true;
   }
 
@@ -52,7 +53,7 @@ const  useSocietyGL = () =>  {
       await societyGlService.update(societyGl);
     }
     openSocietyGlForm.value = false;
-    await getSocietiesGlByCustomer(currentCustomerId);
+    await getSocietiesGlByCustomer();
   }
 
   return{

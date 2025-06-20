@@ -1,9 +1,9 @@
 <template>
-   <q-page class="q-pa-md">
-    <div class="text-h6">SOCIEDADES GL</div>
-
-    <q-card flat class="row q-pa-md q-my-md">
-        <div class="col-12 col-md-3">
+  <q-page class="q-pa-md">
+    <div class="text-h6">Segmentos</div>
+    <q-card flat class="q-pa-md q-my-md">
+      <div class="row q-gutter-md">
+         <div class="col-12 col-sm-4 col-md-3">
           <q-select
             v-model="currentCustomerId"
             @update:model-value="onSelectedCustomer"
@@ -18,15 +18,47 @@
           >
           </q-select>
         </div>
+        <div class="col-12 col-sm-4 col-md-3">
+          <q-select
+            v-model="currentSocietyGlId"
+            @update:model-value="onSelectedSocietyGl"
+            :disable="!currentCustomerId"
+            :options="societiesGl"
+            dense
+            emit-value
+            label="Seleccione Sociedad GL"
+            map-options
+            outlined
+            option-label="name"
+            option-value="id"
+          >
+          </q-select>
+        </div>
+        <div class="col-12 col-sm-4 col-md-3">
+          <q-select
+            v-model="currentSocietyFiId"
+            @update:model-value="onSelectedSocietyFi"
+            :disable="!currentSocietyGlId"
+            :options="societiesFi"
+            dense
+            emit-value
+            label="Seleccione Sociedad FI"
+            map-options
+            outlined
+            option-label="name"
+            option-value="id"
+          >
+          </q-select>
+        </div>
+      </div>
     </q-card>
-
     <q-card flat
       class="row q-pa-md q-my-sm"
     >
       <div class="col-4 col-sm-6">
         <q-btn
-          @click="addSocietyGl"
-          :disable="currentCustomerId == null"
+          @click="addBranch"
+          :disable="!currentSocietyFiId"
           color="primary"
           icon="add_circle_outline"
           label="Añadir"
@@ -48,7 +80,6 @@
         </q-input>
       </div>
     </q-card>
-
     <q-card
       flat
       class="q-mt-md">
@@ -56,7 +87,7 @@
         <q-table
           flat
           :filter="filter"
-          :rows="societiesGl"
+          :rows="branches"
           :columns="columns"
           row-key="id"
         >
@@ -71,13 +102,14 @@
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
             <q-btn
-              @click="getSocietyGl(props.row.id)"
+              @click="getBranch(props.row.id)"
               dense
               color="grey-7"
               flat
               icon="edit"
             />
             <q-btn
+              @click="removeSpecialtyFi(props.row.id)"
               dense
               color="grey-7"
               class="q-ml-sm"
@@ -90,23 +122,29 @@
       </q-card-section>
     </q-card>
   </q-page>
-  <societyGl-form/>
+  <branchForm/>
 </template>
 
 <script setup>
-import {ref, onMounted } from 'vue';
-import useSocietyGL from 'src/core/composables/societyGL/useSocietyGL';
-import societyGlForm from 'src/components/societyGl/societyGlForm.vue';
+import { ref, onMounted} from 'vue';
+import useBranch from 'src/core/composables/branch/useBranch';
+import branchForm from 'src/components/branch/branchForm.vue';
 
-const {
+const{
   customers,
   currentCustomerId,
   societiesGl,
+  currentSocietyGlId,
+  societiesFi,
+  currentSocietyFiId,
+  branches,
   getCustomers,
   onSelectedCustomer,
-  getSocietyGl,
-  addSocietyGl,
-} = useSocietyGL();
+  onSelectedSocietyGl,
+  onSelectedSocietyFi,
+  getBranch,
+  addBranch,
+} = useBranch();
 
 let filter = ref('');
 
@@ -120,5 +158,5 @@ const columns = [
 onMounted(async() => {
   await getCustomers();
 })
-
 </script>
+

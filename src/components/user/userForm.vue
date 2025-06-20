@@ -1,10 +1,10 @@
 <template>
-  <dialog-form v-model="open" :width="600">
+  <dialog-form v-model="openUserForm" :width="800">
     <template #header>
       {{ `${user.id > 0 ? "Editar" : "Agregar"} Usuario` }}
     </template>
     <template #content>
-      <q-form id="customerForm" @submit.prevent="emit('onSubmit')">
+      <q-form id="customerForm" @submit.prevent="handleSaveUser">
         <div class="row q-col-gutter-md">
           <div class="col-12 col-md-12">
             <q-input
@@ -59,36 +59,38 @@
             <q-select
               v-model="user.companyId"
               :options="companies"
-              behavior="menu"
               dense
-              label="Empresa"
               emit-value
+              label="Seleccione empresa"
               map-options
               outlined
+              option-label="name"
+              option-value="id"
             >
               <template v-slot:prepend>
                 <q-icon name="business" />
               </template>
             </q-select>
           </div>
-
           <div class="col-12 col-md-6">
             <q-select
-              v-model="user.companyId"
-              option-label="name"
-              option-value="id"
-              dense
-              label="Rol"
+              v-model="user.roles"
+              :options="roles"
+              multiple
               emit-value
               map-options
               outlined
+              label="Seleccione roles"
+              option-label="name"
+              option-value="id"
+              dense
+              use-chips
             >
               <template v-slot:prepend>
-                <q-icon name="group" />
+                <q-icon name="groups" />
               </template>
             </q-select>
           </div>
-
         </div>
       </q-form>
     </template>
@@ -104,26 +106,15 @@
 </template>
 
 <script setup>
-import { defineEmits, defineProps, watch } from 'vue';
-import DialogForm from 'src/components/common/DialogForm.vue';
+import DialogForm from '../common/DialogForm.vue';
+import useUser from 'src/core/composables/user/useUser';
 
-//props
-defineProps({
-  companies: {
-    type: Array,
-    default: () => []
-  }
-});
-
-//models
-const user = defineModel('data');
-const open = defineModel('open');
-
-//emits
-const emit = defineEmits(['onSubmit', 'onCompanyTypeChanged'])
-
-watch(() => user.value.companyTypeId, (newVal) => {
-  emit('onCompanyTypeChanged', newVal);
-});
+const {
+  user,
+  companies,
+  roles,
+  openUserForm,
+  handleSaveUser
+} = useUser();
 
 </script>

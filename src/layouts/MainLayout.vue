@@ -18,6 +18,7 @@ import { ref } from 'vue'
 //components layout
 import Sidebar from 'src/components/layout/SideBar.vue';
 import LayoutHeader from '../components/layout/LayoutHeader.vue'
+import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 
 const sidebarComponent = ref(null);
 

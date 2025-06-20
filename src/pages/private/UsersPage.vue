@@ -4,22 +4,19 @@
 
     <q-card flat class="row q-pa-md q-my-md">
         <div class="col-12 col-md-3">
-          <q-select
+         <q-select
             v-model="userType"
-            @filter="onSelectedUserType"
+            @update:model-value="getCompanies"
             :options="userTypes"
             dense
-            label="Tipo de Usuario"
+            emit-value
+            label="Seleccione tipo de usuario"
             map-options
             outlined
             option-label="name"
             option-value="id"
-            use-input
           >
-            <template v-slot:prepend>
-              <q-icon name="people" />
-            </template>
-          </q-select>
+        </q-select>
         </div>
     </q-card>
     <q-card flat
@@ -63,9 +60,10 @@
         >
         <template v-slot:body-cell-status="props">
           <q-td :props="props">
-            <q-badge class="q-px-sm" rounded
-              :color="props.value ? 'positive' : 'negative'"
-              :label="props.value ? 'Activo' : 'Inactivo' " />
+            <q-toggle
+              v-model="props.row.isActive"
+              size="sm"
+            />
           </q-td>
         </template>
         <template v-slot:body-cell-actions="props">
@@ -88,13 +86,7 @@
       </q-card-section>
     </q-card>
   </q-page>
-  <user-form
-    v-model:data="user"
-    v-model:open="openUserForm"
-    :companies="companies"
-    @onCompanyTypeChanged="getCompanies"
-    @onSubmit="handleSaveUser"
-  />
+  <user-form/>
 </template>
 
 <script setup>
@@ -106,15 +98,12 @@ import userForm from 'src/components/user/userForm.vue';
 import useUser from 'src/core/composables/user/useUser';
 
 const {
+  userType,
   users,
-  user,
-  companies,
-  openUserForm,
   getUsers,
   getUser,
   getCompanies,
-  addUser,
-  handleSaveUser,
+  addUser
 } = useUser();
 
 let filter = ref('');
@@ -127,14 +116,8 @@ const columns = [
   { name: 'actions', label: 'ACCIONES', align: 'center' , field: 'actions'},
 ]
 
-const userType = ref(null);
-
-const onSelectedUserType = (userType) => {
-  console.log('se filtra por tipo de usuario', userType);
-}
-
 onMounted(() => {
-   getUsers();
+  getUsers();
 })
 
 

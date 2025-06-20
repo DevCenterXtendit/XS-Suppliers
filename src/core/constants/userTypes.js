@@ -4,11 +4,11 @@ export default [
     name: 'XtendIT'
   },
   {
-    id: '2',
+    id: 2,
     name: 'Cliente'
   },
   {
-    id: '3',
+    id: 3,
     name: 'Proveedor'
   },
 ]

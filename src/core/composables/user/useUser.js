@@ -5,13 +5,17 @@ import {
   getById
 } from 'src/core/services/userService';
 
-import * as customerService from 'src/core/services/customerService';
+import { customerService } from 'src/core/services/customerService';
+import { roleService } from 'src/core/services/roleService';
+
+const userType = ref(null);
+const users = ref([]);
+const user = reactive({});
+const companies = ref([]);
+const roles = ref([]);
+const openUserForm = ref(false);
 
 const useUser = () => {
-  const users = ref([]);
-  const user = reactive({});
-  const companies = ref([]);
-  const openUserForm = ref(false);
 
   const initUser = () => {
     return {
@@ -49,6 +53,7 @@ const useUser = () => {
       default:
         break;
     }
+    roles.value = await roleService.getAllByRoleType(companyTypeId);
   }
 
   const addUser = () => {
@@ -56,10 +61,22 @@ const useUser = () => {
     openUserForm.value = true;
   }
 
+   const handleSaveUser = async () => {
+    if(user.id == 0){
+      await customerService.add(user);
+    }else{
+      await customerService.update(user);
+    }
+    openUserForm.value = false;
+    await getUsers();
+  }
+
   return {
-    companies,
-    user,
+    userType,
     users,
+    user,
+    companies,
+    roles,
     openUserForm,
 
     //methods
@@ -67,6 +84,7 @@ const useUser = () => {
     getCompanies,
     getUser,
     getUsers,
+    handleSaveUser
   }
 }
 

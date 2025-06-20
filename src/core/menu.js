@@ -49,6 +49,12 @@ export default [
         label: 'Usuarios',
         to: '/configuration/users'
       },
+      {
+        name: 'users',
+        icon: 'person',
+        label: 'Configuración de campos',
+        to: '/configuration/providerFields'
+      },
     ],
   }
 ]

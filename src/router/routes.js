@@ -1,5 +1,3 @@
-import UsersPage from 'pages/private/UsersPage.vue'
-
 const routes = [
   {
     name: 'mainLayout',
@@ -47,24 +45,24 @@ const routes = [
               {
                 path: 'societyFI',
                 name: 'societyFI',
-                component: () => import ('src/pages/private/SocietyFIPage.vue'),
+                component: () => import ('src/pages/private/SocietyFiPage.vue'),
               },
               {
                 path: 'branches',
                 name: 'branches',
-                component: () => import ('pages/private/CustomersPage.vue'),
+                component: () => import ('src/pages/private/BranchPage.vue'),
               }
             ]
           },
           {
             path: 'users',
             name: 'users',
-            component: UsersPage
+            component:() => import ('src/pages/private/UsersPage.vue'),
           },
           {
-            path: 'fields',
-            name: 'fileds',
-            component: UsersPage
+            path: 'providerFields',
+            name: 'providerFields',
+            component: () => import ('src/pages/private/SupplierFieldConfiguration.vue'),
           }
         ]
       }

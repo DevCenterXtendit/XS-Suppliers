@@ -51,7 +51,7 @@ const useSocietyFi = () => {
 
   const addSocietyFi = () => {
     Object.assign(societyFi, initSocietyFi());
-    societyFi.societyGlId = currentSocietyGlId;
+    societyFi.societyGlId = currentSocietyGlId.value;
     openSocietyFiForm.value = true;
   }
 
@@ -62,7 +62,7 @@ const useSocietyFi = () => {
       await societyFiService.update(societyFi);
     }
     openSocietyFiForm.value = false;
-    await getSocietiesFiBySocietyGl(currentSocietyGlId);
+    await getSocietiesFiBySocietyGl();
   }
 
   const removeSpecialtyFi = async (societyFiId) => {

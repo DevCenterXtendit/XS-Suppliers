@@ -1,15 +1,15 @@
 <template>
-  <dialog-form v-model="openSocietyGlForm" :width="600">
+  <dialog-form v-model="openForm" :width="600">
     <template #header>
-      {{ `${societyGl.id > 0 ? "Editar" : "Agregar"} Sociedad GL` }}
+      {{ `${branch.id > 0 ? "Editar" : "Agregar"} Segmento` }}
     </template>
     <template #content>
-      <q-form id="societyGlForm" @submit.prevent="handleSaveSocietyGl">
+      <q-form id="branchForm" @submit.prevent="handleSave">
         <div class="row q-col-gutter-md">
           <div class="col-12 col-md-12">
             <q-input
-              v-model="societyGl.code"
-              :rules="societyGlRules.code"
+              v-model="branch.code"
+              :rules="branchRules.code"
               dense
               label="ID"
               outlined
@@ -21,8 +21,8 @@
           </div>
           <div class="col-12 col-md-12">
             <q-input
-              v-model="societyGl.name"
-              :rules="societyGlRules.name"
+              v-model="branch.name"
+              :rules="branchRules.name"
               dense
               label="Nombre"
               outlined
@@ -39,7 +39,7 @@
     <template #actions>
       <q-btn unelevated no-caps
         color="primary"
-        form="societyGlForm"
+        form="branchForm"
         label="Guardar"
         type="submit"
       />
@@ -48,15 +48,16 @@
 </template>
 
 <script setup>
-import DialogForm from 'src/components/common/DialogForm.vue'
-import useSocietyGL from 'src/core/composables/societyGL/useSocietyGL';
-import useSocietyGLValidation from 'src/core/composables/societyGL/useSocietyGlValidation';
+import DialogForm from 'src/components/common/DialogForm.vue';
+import useBranch from 'src/core/composables/branch/useBranch';
+import useBranchValidation from 'src/core/composables/branch/useBranchValidation';
 
 const {
-  societyGl,
-  openSocietyGlForm,
-  handleSaveSocietyGl,
-} = useSocietyGL();
+  branch,
+  openForm,
+  handleSave,
 
-const { societyGlRules } = useSocietyGLValidation();
+} = useBranch();
+
+const { branchRules } = useBranchValidation();
 </script>
