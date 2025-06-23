@@ -20,7 +20,7 @@ export const useAuthStore = defineStore('authStore', {
       storageService.setItem( KEYS.user, userLogged)
       storageService.setItem( KEYS.token, token);
     },
-    logOut() {
+    logout() {
       this.userLogged = null;
       this.token = null;
 

@@ -50,10 +50,16 @@ export default [
         to: '/configuration/users'
       },
       {
-        name: 'users',
-        icon: 'person',
+        name: 'supplierFieldsConfiguration',
+        icon: 'grading',
         label: 'Configuración de campos',
-        to: '/configuration/providerFields'
+        to: '/configuration/supplierFieldsConfiguration'
+      },
+      {
+        name: 'supplierFields',
+        icon: 'format_list_bulleted',
+        label: 'Campos proveedor',
+        to: '/configuration/supplierFields'
       },
     ],
   }

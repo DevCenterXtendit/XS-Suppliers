@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import DialogForm from 'src/components/common/DialogForm.vue'
+import DialogForm from 'src/components/common/DialogForm.vue';
 import useSocietyGL from 'src/core/composables/societyGL/useSocietyGL';
 import useSocietyGLValidation from 'src/core/composables/societyGL/useSocietyGlValidation';
 

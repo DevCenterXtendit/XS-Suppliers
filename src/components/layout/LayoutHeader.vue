@@ -48,6 +48,8 @@
 //components
 import ThemeBtn from '../../components/common/ThemeBtn.vue';
 
+import useAuth from 'src/core/composables/auth/useAuth';
 
+const { handleLogout } = useAuth();
 
 </script>

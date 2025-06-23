@@ -60,9 +60,14 @@ const routes = [
             component:() => import ('src/pages/private/UsersPage.vue'),
           },
           {
-            path: 'providerFields',
-            name: 'providerFields',
+            path: 'supplierFieldsConfiguration',
+            name: 'supplierFieldsConfiguration',
             component: () => import ('src/pages/private/SupplierFieldConfiguration.vue'),
+          },
+          {
+            path: 'supplierFields',
+            name: 'supplierFields',
+            component: () => import ('src/pages/private/SupplierFields.vue'),
           }
         ]
       }

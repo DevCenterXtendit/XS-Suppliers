@@ -21,7 +21,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 // Opcional: mapa de rutas a nombres amigables e iconos
 const breadcrumbLabels = {
@@ -30,8 +30,7 @@ const breadcrumbLabels = {
   profile: { label: 'Perfil', icon: 'person' },
 }
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
 
 const breadcrumbs = computed(() => {
   // Divide el path y filtra vacíos
@@ -43,12 +42,12 @@ const breadcrumbs = computed(() => {
     return {
       label: meta.label || segment,
       icon: meta.icon,
-      to: idx < paths.length - 1 ? acc : undefined, // solo los anteriores son enlaces
+      to: idx < paths.length - 1 ? acc : undefined, // definimos el ultimo como lable
       exact: true
     }
   }).length
     ? [
-        // Agrega el "Inicio" al principio
+        // Agregar inicio
         {
           label: breadcrumbLabels[''].label,
           icon: breadcrumbLabels[''].icon,

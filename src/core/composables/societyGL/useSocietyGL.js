@@ -42,7 +42,6 @@ const  useSocietyGL = () =>  {
   const addSocietyGl = () => {
     Object.assign(societyGl, initSocietyGl());
     societyGl.customerId = currentCustomerId.value;
-    console.log(societyGl);
     openSocietyGlForm.value = true;
   }
 

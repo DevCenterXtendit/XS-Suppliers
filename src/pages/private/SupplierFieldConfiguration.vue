@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
-      <AppBreadcrumbs />
-    <div class="text-h6">SOCIEDADES GL</div>
+    <AppBreadcrumbs />
+    <div class="text-h6">Configuración de campos</div>
 
     <q-card flat class="row q-pa-md q-my-md">
       <div class="col-12 col-md-3">
@@ -19,66 +19,78 @@
         >
         </q-select>
       </div>
-      <!-- <div class="col-12 col-md-3">
-        <q-select
-          v-model="currentCustomerId"
-          @update:model-value="onSelectedCustomer"
-          :options="customers"
+    </q-card>
+    <q-card flat
+      class="row q-pa-md q-my-sm"
+    >
+      <div class="col-4 col-sm-6">
+        <q-btn
+          @click="addUser"
+          color="primary"
+          icon="add_circle_outline"
+          label="Añadir"
+          no-caps
+          unelevated
+        />
+      </div>
+      <div class="col-8 col-sm-6">
+        <q-input
           dense
-          emit-value
-          label="Seleccione Cliente"
-          map-options
+          clearable
           outlined
-          option-label="name"
-          option-value="id"
+          placeholder="Buscar"
+          v-model="filter"
         >
-        </q-select>
-      </div> -->
-  </q-card>
-  <q-card
-    flat
-    class="q-mt-md">
-    <q-card-section class="">
-      <q-table
-        flat
-        :rows="supplierFields"
-        :columns="columns"
-        row-key="id"
-      >
-      <template v-slot:body-cell-isVisible="props">
-        <q-td :props="props">
-          <q-toggle
-            v-model="props.row.isVisible"
-            size="sm"
-          />
-        </q-td>
-      </template>
-      <template v-slot:body-cell-isRequired="props">
-        <q-td :props="props">
-          <q-toggle
-            v-model="props.row.isRequired"
-            size="sm"
-          />
-        </q-td>
-      </template>
-      <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
-          <q-btn
-            @click="getSocietyGl(props.row.id)"
-            dense
-            color="grey-7"
-            flat
-            icon="edit"
-          />
-          <q-btn
-            dense
-            color="grey-7"
-            class="q-ml-sm"
-            flat
-            icon="delete"
-          />
-        </q-td>
-      </template>
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </div>
+    </q-card>
+    <q-card
+      flat
+      class="q-mt-md">
+      <q-card-section>
+        <q-table
+          flat
+          :rows="supplierFields"
+          :columns="columns"
+          row-key="id"
+        >
+          <template v-slot:body-cell-isVisible="props">
+            <q-td :props="props">
+              <q-toggle
+                v-model="props.row.isVisible"
+                size="sm"
+              />
+            </q-td>
+          </template>
+          <template v-slot:body-cell-isRequired="props">
+            <q-td :props="props">
+              <q-toggle
+                v-model="props.row.isRequired"
+                size="sm"
+              />
+            </q-td>
+          </template>
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
+              <q-btn
+                @click="getSocietyGl(props.row.id)"
+                dense
+                color="grey-7"
+                flat
+                icon="edit"
+              />
+              <q-btn
+                dense
+                color="grey-7"
+                class="q-ml-sm"
+                flat
+                icon="delete"
+              />
+            </q-td>
+          </template>
         </q-table>
       </q-card-section>
     </q-card>
@@ -86,8 +98,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import useSupplierField from 'src/core/composables/supplierField/useSupplierFiled';
+import { onMounted } from 'vue';
+import useSupplierField from 'src/core/composables/supplierField/useSupplierField';
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 
 const {

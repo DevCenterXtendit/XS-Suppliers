@@ -1,5 +1,6 @@
 <template>
   <q-page class="q-pa-md">
+    <AppBreadcrumbs />
     <div class="text-h6">Usuarios</div>
 
     <q-card flat class="row q-pa-md q-my-md">
@@ -94,6 +95,7 @@ import {ref, onMounted } from 'vue';
 import userTypes from 'src/core/constants/userTypes';
 //components
 import userForm from 'src/components/user/userForm.vue';
+import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 //composables
 import useUser from 'src/core/composables/user/useUser';
 
