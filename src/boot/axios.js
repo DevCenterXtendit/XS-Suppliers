@@ -1,7 +1,7 @@
 import { defineBoot } from '#q-app/wrappers'
 import axios from 'axios'
+import { useAuthStore } from 'src/stores/auth-store'
 import { handleErrorResponse } from 'src/core/interceptors/handleErrorResponse'
-import { loader } from './loader';
 import { handleSuccessResponse } from 'src/core/interceptors/handleSuccessResponse'
 
 // Be careful when using SSR for cross-request state pollution
@@ -11,7 +11,6 @@ import { handleSuccessResponse } from 'src/core/interceptors/handleSuccessRespon
 // "export default () => {}" function below (which runs individually
 // for each client)
 const baseURL = import.meta.env.VITE_XS_SUPPLIERS_API;
-
 console.log(baseURL);
 
 const api = axios.create({
@@ -35,9 +34,10 @@ api.interceptors.request.use(
   (config) => {
     config.requiresAuth = config.requiresAuth !== false;
 
-    const token = localStorage.getItem('token');
-    if (config.requiresAuth && token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const authStore = useAuthStore();
+
+    if (config.requiresAuth) {
+      config.headers.Authorization = `Bearer ${authStore.token}`;
     }
 
     // loader.show()
@@ -51,11 +51,9 @@ api.interceptors.request.use(
 // Interceptor for response
 api.interceptors.response.use(
   (resp) => {
-    loader.hide();
     return handleSuccessResponse(resp);
   },
   (error) => {
-    loader.hide();
     return handleErrorResponse(error);
   }
 );

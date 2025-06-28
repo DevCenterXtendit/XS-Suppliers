@@ -1,5 +1,6 @@
 <template>
   <q-page class="q-pa-md">
+    <AppBreadcrumbs />
     <div class="text-h6 q-mb-md">Configuración Empresarial</div>
 
     <div style="max-width: 800px">
@@ -30,6 +31,7 @@
 </template>
 
 <script setup>
+import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

@@ -1,5 +1,6 @@
 <template>
    <q-page class="q-pa-md">
+    <AppBreadcrumbs />
     <div class="text-h6">Sociedades FI</div>
     <q-card flat class="q-pa-md q-my-md">
       <div class="row q-gutter-md">
@@ -113,6 +114,8 @@
 <script setup>
 import {ref, onMounted } from 'vue';
 import useSocietyFi from 'src/core/composables/societyFI/useSocietyFI';
+
+import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 import societyFiForm from 'src/components/societyFi/societyFiForm.vue';
 
 const {

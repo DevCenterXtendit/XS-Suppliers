@@ -4,7 +4,7 @@
     <div class="text-h6">Configuración de campos</div>
 
     <q-card flat class="row q-pa-md q-my-md">
-      <div class="col-12 col-md-3">
+      <div class="col-12 col-sm-6 col-md-4">
         <q-select
           v-model="currentCustomerId"
           @update:model-value="onSelectedCustomer"
@@ -18,33 +18,6 @@
           option-value="id"
         >
         </q-select>
-      </div>
-    </q-card>
-    <q-card flat
-      class="row q-pa-md q-my-sm"
-    >
-      <div class="col-4 col-sm-6">
-        <q-btn
-          @click="addUser"
-          color="primary"
-          icon="add_circle_outline"
-          label="Añadir"
-          no-caps
-          unelevated
-        />
-      </div>
-      <div class="col-8 col-sm-6">
-        <q-input
-          dense
-          clearable
-          outlined
-          placeholder="Buscar"
-          v-model="filter"
-        >
-          <template v-slot:prepend>
-            <q-icon name="search" />
-          </template>
-        </q-input>
       </div>
     </q-card>
     <q-card
@@ -73,24 +46,6 @@
               />
             </q-td>
           </template>
-          <template v-slot:body-cell-actions="props">
-            <q-td :props="props">
-              <q-btn
-                @click="getSocietyGl(props.row.id)"
-                dense
-                color="grey-7"
-                flat
-                icon="edit"
-              />
-              <q-btn
-                dense
-                color="grey-7"
-                class="q-ml-sm"
-                flat
-                icon="delete"
-              />
-            </q-td>
-          </template>
         </q-table>
       </q-card-section>
     </q-card>
@@ -99,7 +54,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import useSupplierField from 'src/core/composables/supplierField/useSupplierField';
+import useSupplierFieldConfiguration from 'src/core/composables/supplierFieldConfiguration/useSupplierFieldConfiguration';
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 
 const {
@@ -107,11 +62,12 @@ const {
   currentCustomerId,
   supplierFields,
   getCustomers,
+  getSupplierFields,
   onSelectedCustomer,
-} = useSupplierField();
+} = useSupplierFieldConfiguration();
 
 const columns = [
-  { name: 'name', label: 'CAMPO', align: 'left', field: 'name' },
+  { name: 'text', label: 'CAMPO', align: 'left', field: 'text' },
   { name: 'fieldType', label: 'CLASIFICACION', align: 'left', field: 'fieldType'},
   { name: 'isVisible', label: 'VISUALIZAR', align: "center", field: 'isVisible' },
   { name: 'isRequired', label: 'OBLIGATORIO', align: "center", field: 'isRequired' },
@@ -119,6 +75,7 @@ const columns = [
 
 onMounted(async() => {
   await getCustomers();
+  await getSupplierFields();
 })
 
 </script>

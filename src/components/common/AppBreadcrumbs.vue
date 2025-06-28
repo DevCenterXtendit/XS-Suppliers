@@ -25,15 +25,14 @@ import { useRoute } from 'vue-router'
 
 // Opcional: mapa de rutas a nombres amigables e iconos
 const breadcrumbLabels = {
-  '':      { label: 'Inicio', icon: 'home' },
-  config:  { label: 'Configuración', icon: 'settings' },
-  profile: { label: 'Perfil', icon: 'person' },
+  '':      { label: 'Home', icon: 'home' }
 }
 
 const route = useRoute();
 
 const breadcrumbs = computed(() => {
   // Divide el path y filtra vacíos
+  console.log('aquí inicia el filtrado de paths');
   const paths = route.path.split('/').filter(Boolean)
   let acc = ''
   return paths.map((segment, idx) => {

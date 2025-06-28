@@ -1,14 +1,9 @@
 import { api } from 'boot/axios';
 
-const baseEndpoint = "/SupplierFields"
+const baseEndpoint = "/SupplierFieldType"
 
 const getAll = async () => {
   const response = await api.get(baseEndpoint);
-  return response;
-};
-
-const getAllWithDetail = async () => {
-  const response = await api.get(`${baseEndpoint}/Detail`);
   return response;
 };
 
@@ -27,10 +22,9 @@ const update = async (payload) => {
   return response;
 }
 
-export const supplierFieldService = {
+export const supplierFieldTypeService = {
     add,
     getAll,
-    getAllWithDetail,
     getById,
     update,
 };

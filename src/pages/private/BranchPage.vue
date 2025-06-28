@@ -1,5 +1,6 @@
 <template>
   <q-page class="q-pa-md">
+    <AppBreadcrumbs />
     <div class="text-h6">Segmentos</div>
     <q-card flat class="q-pa-md q-my-md">
       <div class="row q-gutter-md">
@@ -128,6 +129,8 @@
 <script setup>
 import { ref, onMounted} from 'vue';
 import useBranch from 'src/core/composables/branch/useBranch';
+
+import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 import branchForm from 'src/components/branch/branchForm.vue';
 
 const{

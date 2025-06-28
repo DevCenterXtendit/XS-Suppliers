@@ -3,7 +3,7 @@ import { supplierFieldService } from 'src/core/services/supplierFieldService';
 
 const supplierFields = ref([]);
 const supplierField = reactive({});
-const openForm = ref(false);
+const openSupplierFieldForm = ref(false);
 
 const useSupplierField = () => {
 
@@ -11,7 +11,8 @@ const useSupplierField = () => {
     return {
       id: 0,
       name : '',
-      fieldTypeId: 0
+      text : '',
+      fieldTypeId: null
     }
   }
 
@@ -22,19 +23,33 @@ const useSupplierField = () => {
 
   const addSupplierField = async () => {
     Object.assign(supplierField, initSupplierField());
-    openForm.value = true;
+    openSupplierFieldForm.value = true;
+  }
+
+  const getSupplierField = async (supplierFieldId) => {
+    Object.assign(supplierField, initSupplierField());
+    const response = await supplierFieldService.getById(supplierFieldId);
+    Object.assign(supplierField, response);
+    openSupplierFieldForm.value = true;
   }
 
   const handleSaveSupplierField = async () => {
-    console.log('Se guarda el campo');
+    if(supplierField.id == 0){
+      await supplierFieldService.add(supplierField);
+    }else{
+      await supplierFieldService.update(supplierField);
+    }
+    openSupplierFieldForm.value = false;
+    await getSupplierFields();
   }
 
   return {
     supplierFields,
     supplierField,
-    openForm,
+    openSupplierFieldForm,
     getSupplierFields,
     addSupplierField,
+    getSupplierField,
     handleSaveSupplierField
   }
 }

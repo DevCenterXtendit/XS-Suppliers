@@ -10,7 +10,7 @@
         z-index: 10;
       "
     >
-      Hola Sergio
+      Hola {{ fullName }}
     </div>
     <div class="row q-col-gutter-md" style="max-width: 1024px; width: 100%;">
       <!-- Card de bienvenida -->
@@ -99,5 +99,17 @@
   </q-page>
 </template>
 
-<script seutp>
+<script setup>
+import { computed } from 'vue';
+import useAuth from 'src/core/composables/auth/useAuth';
+
+const { userLogged } = useAuth();
+
+const fullName = computed(() => {
+  const name = userLogged?.name?.split(' ')[0] || '';
+  const lastName = userLogged?.lastNames?.split(' ')[0] || '';
+
+  return name && lastName ? `${name} ${lastName}` : "Desconocido";
+});
+
 </script>

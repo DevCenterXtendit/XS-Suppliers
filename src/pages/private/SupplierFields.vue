@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <AppBreadcrumbs />
-    <div class="text-h6">Configuración de campos</div>
+    <div class="text-h6">Campos proveedor</div>
     <q-tabs
       v-model="tab"
       dense
@@ -49,31 +49,21 @@
           class="q-mt-md">
           <q-card-section>
             <q-table
-              flat
-              :rows="supplierFields"
               :columns="columns"
+              :filter="filter"
+              :rows="supplierFields"
+              flat
               row-key="id"
             >
-              <template v-slot:body-cell-isVisible="props">
-                <q-td :props="props">
-                  <q-toggle
-                    v-model="props.row.isVisible"
-                    size="sm"
-                  />
-                </q-td>
-              </template>
-              <template v-slot:body-cell-isRequired="props">
-                <q-td :props="props">
-                  <q-toggle
-                    v-model="props.row.isRequired"
-                    size="sm"
-                  />
-                </q-td>
+              <template v-slot:body-cell-fieldType="props">
+               <q-td :props="props">
+                 {{getFieldTypeById(props.row.id)}}
+               </q-td>
               </template>
               <template v-slot:body-cell-actions="props">
                 <q-td :props="props">
                   <q-btn
-                    @click="getSocietyGl(props.row.id)"
+                    @click="getSupplierField(props.row.id)"
                     dense
                     color="grey-7"
                     flat
@@ -92,13 +82,14 @@
           </q-card-section>
         </q-card>
       </q-tab-panel>
+      <!-- tipo de campos -->
       <q-tab-panel name="supplierFieldType" class="q-px-none">
         <q-card flat
           class="row q-pa-md"
         >
           <div class="col-4 col-sm-6">
             <q-btn
-              @click="addSupplierField"
+              @click="addSupplierFieldType"
               color="primary"
               icon="add_circle_outline"
               label="Añadir"
@@ -112,7 +103,7 @@
               clearable
               outlined
               placeholder="Buscar"
-              v-model="filter"
+              v-model="filetrType"
             >
               <template v-slot:prepend>
                 <q-icon name="search" />
@@ -125,9 +116,10 @@
           class="q-mt-md">
           <q-card-section>
             <q-table
+              :columns="columnsType"
+              :filter="filetrType"
+              :rows="supplierFieldTypes"
               flat
-              :rows="supplierFields"
-              :columns="columns"
               row-key="id"
             >
               <template v-slot:body-cell-isVisible="props">
@@ -149,7 +141,7 @@
               <template v-slot:body-cell-actions="props">
                 <q-td :props="props">
                   <q-btn
-                    @click="getSocietyGl(props.row.id)"
+                    @click="getSupplierFieldType(props.row.id)"
                     dense
                     color="grey-7"
                     flat
@@ -169,33 +161,62 @@
         </q-card>
       </q-tab-panel>
     </q-tab-panels>
-
-
   </q-page>
+  <SupplierFieldTypeForm />
+  <SupplierFieldForm/>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import useSupplierField from 'src/core/composables/supplierField/useSupplierField';
+import { ref, onMounted, computed } from 'vue';
 
+//composables
+import useSupplierField from 'src/core/composables/supplierField/useSupplierField';
+import useSupplierFieldType from 'src/core/composables/supplierFieldType/useSupplierFieldType';
+
+//components
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
+import SupplierFieldTypeForm from 'src/components/supplierFieldType/SupplierFieldTypeForm.vue';
+import SupplierFieldForm from 'src/components/supplierFields/SupplierFieldForm.vue';
+
 const {
   supplierFields,
-  // getSupplierFields,
+  getSupplierFields,
   addSupplierField,
+  getSupplierField
 } = useSupplierField();
 
-const columns = [
-  { name: 'name', label: 'CAMPO', align: 'left', field: 'name' },
-  { name: 'fieldType', label: 'CLASIFICACION', align: 'left', field: 'fieldType'},
-  { name: 'isVisible', label: 'VISUALIZAR', align: "center", field: 'isVisible' },
-  { name: 'isRequired', label: 'OBLIGATORIO', align: "center", field: 'isRequired' },
-]
+const {
+  supplierFieldTypes,
+  getSupplierFieldTypes,
+  addSupplierFieldType,
+  getSupplierFieldType
+} = useSupplierFieldType();
 
 const tab = ref('supplierFields')
 
-onMounted(async() => {
-  // await getSupplierFields();
+const columns = [
+  { name: 'text', label: 'CAMPO', align: 'left', field: 'text' },
+  { name: 'fieldType', label: 'CLASIFICACION', align: 'left', field: 'fieldTypeId'},
+  { name: 'actions', label: 'ACCIONES', align: 'center' , field: 'actions'},
+]
+
+const columnsType = [
+  { name: 'text', label: 'TIPO DE CAMPO', align: 'left', field: 'text'},
+  { name: 'actions', label: 'ACCIONES', align: 'center' , field: 'actions'},
+]
+
+let filter = ref('');
+let filetrType = ref('');
+
+const getFieldTypeById = computed(() => {
+  return (id) => {
+    const field = supplierFieldTypes.value.find(f => f.id === id)
+    return field ? field.text : ''
+  }
 })
 
+onMounted(async() => {
+  await getSupplierFields();
+  await getSupplierFieldTypes();
+})
 </script>

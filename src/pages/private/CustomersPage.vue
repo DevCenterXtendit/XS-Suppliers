@@ -1,6 +1,7 @@
 <template>
   <q-page class="q-pa-md">
-    <div class="text-h6">CLIENTES</div>
+    <AppBreadcrumbs />
+    <div class="text-h6">Clientes</div>
     <q-card flat
       class="row q-pa-md q-my-sm"
     >
@@ -81,6 +82,7 @@
 import {ref, onMounted } from 'vue';
 
 //components
+import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 import customerForm from 'src/components/customer/customerForm.vue';
 
 //composables

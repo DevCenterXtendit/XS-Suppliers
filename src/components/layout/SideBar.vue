@@ -40,12 +40,12 @@ defineExpose({
 .body--light {
   .bg-sidebar {
     background-color: #212631;
+     color: #fff;
   }
 
   .active-menu {
     background-color: $primary;
     color: #fff;
-    border-radius: 8px;
   }
 }
 
@@ -56,7 +56,6 @@ defineExpose({
   .active-menu {
     background-color: $d-primary;
     color: #fff;
-    border-radius: 8px;
   }
 }
 

@@ -18,16 +18,13 @@ const useAuth = () => {
   const handleLogin = async () => {
     const userResp = await authenticate(auth);
 
-    console.log(userResp);
-
     let userLogged = {
       name: userResp.name,
-      lastName: userResp.lastName,
+      lastNames: userResp.lastNames,
       email: userResp.email,
     }
 
     authStore.login(userLogged, userResp.token);
-
     router.push('/');
   }
 

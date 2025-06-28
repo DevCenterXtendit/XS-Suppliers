@@ -10,7 +10,7 @@ const routes = [
       {
         name: 'dashboard',
         path: '',
-        component: () => import('pages/IndexPage.vue')
+        component: () => import('src/pages/private/IndexPage.vue')
       },
       {
         name: 'configurationLayout',

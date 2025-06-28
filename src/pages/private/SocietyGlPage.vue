@@ -1,23 +1,24 @@
 <template>
    <q-page class="q-pa-md">
-    <div class="text-h6">SOCIEDADES GL</div>
+    <AppBreadcrumbs />
+    <div class="text-h6">Sociedades GL</div>
 
     <q-card flat class="row q-pa-md q-my-md">
-        <div class="col-12 col-md-3">
-          <q-select
-            v-model="currentCustomerId"
-            @update:model-value="onSelectedCustomer"
-            :options="customers"
-            dense
-            emit-value
-            label="Seleccione Cliente"
-            map-options
-            outlined
-            option-label="name"
-            option-value="id"
-          >
-          </q-select>
-        </div>
+      <div class="col-12 col-sm-6 col-md-4">
+        <q-select
+          v-model="currentCustomerId"
+          @update:model-value="onSelectedCustomer"
+          :options="customers"
+          dense
+          emit-value
+          label="Seleccione Cliente"
+          map-options
+          outlined
+          option-label="name"
+          option-value="id"
+        >
+        </q-select>
+      </div>
     </q-card>
 
     <q-card flat
@@ -96,6 +97,8 @@
 <script setup>
 import {ref, onMounted } from 'vue';
 import useSocietyGL from 'src/core/composables/societyGL/useSocietyGL';
+
+import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 import societyGlForm from 'src/components/societyGl/societyGlForm.vue';
 
 const {

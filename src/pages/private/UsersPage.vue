@@ -2,23 +2,20 @@
   <q-page class="q-pa-md">
     <AppBreadcrumbs />
     <div class="text-h6">Usuarios</div>
-
     <q-card flat class="row q-pa-md q-my-md">
-        <div class="col-12 col-md-3">
-         <q-select
-            v-model="userType"
+      <div class="col-12 col-sm-6 col-md-4">
+        <q-select
+            v-model="companyType"
             @update:model-value="getCompanies"
-            :options="userTypes"
+            :options="companyTypes"
             dense
-            emit-value
             label="Seleccione tipo de usuario"
             map-options
             outlined
             option-label="name"
-            option-value="id"
           >
         </q-select>
-        </div>
+      </div>
     </q-card>
     <q-card flat
       class="row q-pa-md q-my-sm"
@@ -26,6 +23,7 @@
       <div class="col-4 col-sm-6">
         <q-btn
           @click="addUser"
+          :disable="companyType==null"
           color="primary"
           icon="add_circle_outline"
           label="Añadir"
@@ -51,38 +49,38 @@
     <q-card
       flat
       class="q-mt-md">
-      <q-card-section class="">
+      <q-card-section>
         <q-table
-          flat
+          :columns="columns"
           :filter="filter"
           :rows="users"
-          :columns="columns"
+          flat
           row-key="id"
         >
-        <template v-slot:body-cell-status="props">
-          <q-td :props="props">
-            <q-toggle
-              v-model="props.row.isActive"
-              size="sm"
-            />
-          </q-td>
-        </template>
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props">
-            <q-btn dense
-              flat
-              color="grey-7"
-              icon="edit"
-              @click="getUser(props.row.id)"
-            />
-            <q-btn dense
-              flat
-              color="grey-7"
-              class="q-ml-sm"
-              icon="delete"
-            />
-          </q-td>
-        </template>
+          <template v-slot:body-cell-status="props">
+            <q-td :props="props">
+              <q-toggle
+                v-model="props.row.isActive"
+                size="sm"
+              />
+            </q-td>
+          </template>
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
+              <q-btn dense
+                flat
+                color="grey-7"
+                icon="edit"
+                @click="getUser(props.row.id)"
+              />
+              <q-btn dense
+                flat
+                color="grey-7"
+                class="q-ml-sm"
+                icon="delete"
+              />
+            </q-td>
+          </template>
         </q-table>
       </q-card-section>
     </q-card>
@@ -92,7 +90,7 @@
 
 <script setup>
 import {ref, onMounted } from 'vue';
-import userTypes from 'src/core/constants/userTypes';
+import companyTypes from 'src/core/constants/company-type-list';
 //components
 import userForm from 'src/components/user/userForm.vue';
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
@@ -100,7 +98,7 @@ import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 import useUser from 'src/core/composables/user/useUser';
 
 const {
-  userType,
+  companyType,
   users,
   getUsers,
   getUser,
