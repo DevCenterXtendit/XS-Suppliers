@@ -38,13 +38,13 @@ const routes = [
                 component: () => import ('pages/private/CustomersPage.vue'),
               },
               {
-                path: 'societyGL',
-                name: 'societyGL',
+                path: 'societies-GL',
+                name: 'societiesGL',
                 component: () => import ('pages/private/SocietyGlPage.vue'),
               },
               {
-                path: 'societyFI',
-                name: 'societyFI',
+                path: 'societies-FI',
+                name: 'societiesFI',
                 component: () => import ('src/pages/private/SocietyFiPage.vue'),
               },
               {
@@ -60,17 +60,27 @@ const routes = [
             component:() => import ('src/pages/private/UsersPage.vue'),
           },
           {
-            path: 'supplierFieldsConfiguration',
+            path: 'roles',
+            name: 'roles',
+            component:() => import ('src/pages/private/RolesPage.vue'),
+          },
+          {
+            path: 'roles-permissions/:id',
+            name: 'rolePermissions',
+            component:() => import ('src/pages/private/RolePermissionsPage.vue'),
+          },
+          {
+            path: 'supplier-fields-configuration',
             name: 'supplierFieldsConfiguration',
             component: () => import ('src/pages/private/SupplierFieldConfiguration.vue'),
           },
           {
-            path: 'supplierFields',
+            path: 'supplier-fields',
             name: 'supplierFields',
             component: () => import ('src/pages/private/SupplierFields.vue'),
           }
         ]
-      }
+      },
     ]
   },
   {

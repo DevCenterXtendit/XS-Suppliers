@@ -24,16 +24,16 @@ export default [
             to: '/configuration/company-structure/customers'
           },
           {
-            name: 'societyGL',
+            name: 'societiesGL',
             icon: 'business',
             label: 'Sociedad GL',
-            to: '/configuration/company-structure/societyGL'
+            to: '/configuration/company-structure/societies-GL'
           },
           {
-            name: 'societyFI',
+            name: 'societiesFI',
             icon: 'business',
             label: 'Sociedad FI',
-            to: '/configuration/company-structure/societyFI'
+            to: '/configuration/company-structure/societies-FI'
           },
           {
             name: 'branches',
@@ -50,16 +50,22 @@ export default [
         to: '/configuration/users'
       },
       {
+        name: 'roles',
+        icon: 'groups',
+        label: 'Roles',
+        to: '/configuration/roles'
+      },
+      {
         name: 'supplierFields',
         icon: 'format_list_bulleted',
         label: 'Campos proveedor',
-        to: '/configuration/supplierFields'
+        to: '/configuration/supplier-fields'
       },
       {
         name: 'supplierFieldsConfiguration',
         icon: 'grading',
         label: 'Configuración de campos',
-        to: '/configuration/supplierFieldsConfiguration'
+        to: '/configuration/supplier-fields-configuration'
       },
     ],
   }

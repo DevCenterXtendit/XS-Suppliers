@@ -1,8 +1,7 @@
 import { ref, reactive } from 'vue'
 import { userService } from 'src/core/services/userService';
-
-
 import { customerService } from 'src/core/services/customerService';
+import { supplierService } from 'src/core/services/supplierService';
 import { roleService } from 'src/core/services/roleService';
 
 const companyType = ref(null);
@@ -28,14 +27,8 @@ const useUser = () => {
   }
 
   const getUsers = async () => {
-    users.value = await userService.getAll();
-  }
-
-  const getUser = async (userId) => {
-    Object.assign(user, initUser());
-    const userResponse = await userService.getById(userId);
-    Object.assign(user, userResponse);
-    openUserForm.value = true;
+    const idToUse = companyType?.value?.id ?? null;
+    users.value = await userService.getAll(idToUse);
   }
 
   const getCompanies = async () => {
@@ -45,17 +38,27 @@ const useUser = () => {
         companies.value = await customerService.getAll();
         break;
       case 3:
-        //Cargar empresas proveedor
+        companies.value = await supplierService.getAll();
         break;
       default:
         break;
     }
+  }
+
+  const getRoles = async () => {
     roles.value = await roleService.getAllByRoleType(companyType.value.id);
+  }
+
+  const getUser = async (userId) => {
+    Object.assign(user, initUser());
+    const userResponse = await userService.getById(userId);
+    Object.assign(user, userResponse);
+    openUserForm.value = true;
   }
 
   const addUser = () => {
     Object.assign(user, initUser());
-    user.companyTypeId = companyType.value.id;
+    user.companyTypeId = companyType.value ? companyType.value.id : null;
     openUserForm.value = true;
   }
 
@@ -79,9 +82,10 @@ const useUser = () => {
 
     //methods
     addUser,
-    getCompanies,
-    getUser,
     getUsers,
+    getCompanies,
+    getRoles,
+    getUser,
     handleSaveUser
   }
 }

@@ -1,16 +1,18 @@
 <template>
   <q-page class="q-pa-md column no-wrap">
-    <AppBreadcrumbs />
-    <div class="text-h6">Usuarios</div>
-    <q-card v-if="userLogged.companyType == COMPANY_TYPE.XTENDIT"
-      flat class="row q-pa-md q-mt-sm">
+    <app-breadcrumbs/>
+    <div class="text-h6">Roles</div>
+    <q-card
+      flat
+      class="row q-pa-md q-mt-md"
+    >
       <div class="col-12 col-sm-6 col-md-4">
         <q-select
-            v-model="companyType"
-            @update:model-value="onSelectedCompanyType"
-            :options="companyTypes"
+            v-model="roleType"
+            @update:model-value="getRoles"
+            :options="roleTypeList"
             dense
-            label="Seleccione tipo de usuario"
+            label="Seleccione tipo de rol"
             map-options
             outlined
             option-label="name"
@@ -18,13 +20,14 @@
         </q-select>
       </div>
     </q-card>
-    <q-card flat
+    <q-card
+      flat
       class="row q-pa-md q-my-md"
     >
       <div class="col-4 col-sm-6">
         <q-btn
-          @click="addUser"
-          :disable="companyType==null && userLogged.companyType == COMPANY_TYPE.XTENDIT"
+          @click="addRole"
+          :disable="roleType==null"
           color="primary"
           icon="add_circle_outline"
           label="Añadir"
@@ -46,7 +49,6 @@
         </q-input>
       </div>
     </q-card>
-
     <q-card
       flat
       class="col column no-wrap q-px-sm"
@@ -54,8 +56,7 @@
       <q-table
         :columns="columns"
         :filter="filter"
-        :pagination="initialPagination"
-        :rows="users"
+        :rows="roles"
         color="secondary"
         flat
         row-key="id"
@@ -76,85 +77,67 @@
               flat
               color="grey-7"
               icon="edit"
-              @click="getUser(props.row.id)"
-            />
+              @click="getRole(props.row.id)"
+            >
+            </q-btn>
+              <q-btn dense
+              flat
+              color="grey-7"
+              class="q-ml-sm"
+              icon="settings"
+              @click="configurePermissions(props.row)"
+            >
+            </q-btn>
             <q-btn dense
               flat
               color="grey-7"
               class="q-ml-sm"
               icon="delete"
-            />
+            >
+            </q-btn>
           </q-td>
         </template>
       </q-table>
     </q-card>
   </q-page>
-  <user-form/>
+  <role-form/>
 </template>
 
 <script setup>
-import {ref, onMounted, onUnmounted } from 'vue';
-import companyTypes from 'src/core/constants/company-type-list';
-//components
-import userForm from 'src/components/user/userForm.vue';
+import { ref } from 'vue';
+import roleTypeList from 'src/core/constants/role-type-list';
+import useRole from 'src/core/composables/role/useRole';
+import { onBeforeRouteLeave } from 'vue-router';
+
+//componenents
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
-//composables
-import useUser from 'src/core/composables/user/useUser';
-import useAuth from 'src/core/composables/auth/useAuth';
-import { COMPANY_TYPE } from 'src/core/constants/company-type';
+import roleForm from 'src/components/role/roleForm.vue';
 
 const {
-  companyType,
-  users,
-  roles,
-  companies,
-  getUsers,
-  getCompanies,
   getRoles,
-  getUser,
-  addUser
-} = useUser();
+  getRole,
+  addRole,
+  configurePermissions,
+  roleType,
+  roles
+} = useRole();
 
-const {
-  userLogged
-} = useAuth();
-
-const initialPagination = {
-  rowsPerPage: 10,
-};
-
-let filter = ref('');
+const filter = ref('');
 
 const columns = [
   { name: 'name', label: 'NOMBRE', align: 'left', field: 'name'},
-  { name: 'lastNames', label: 'APELLIDOS', align: 'left', field: 'lastNames'},
-  { name: 'email', label: 'EMAIL', align: "left", field: 'email' },
+  { name: 'description', label: 'DESCRIPCION', align: 'left', field: 'description'},
   { name: 'status', label: 'ESTATUS', align: "center", field: 'isActive' },
   { name: 'actions', label: 'ACCIONES', align: 'center' , field: 'actions'},
 ]
 
-const onSelectedCompanyType = () => {
-  initPage();
-}
-
-const initPage = async () => {
-  await getUsers();
-  await getCompanies();
-  await getRoles();
-}
-
-onMounted(async () => {
-  if (userLogged.companyType !== COMPANY_TYPE.XTENDIT){
-    await initPage();
+onBeforeRouteLeave((to, from, next) => {
+  console.log(to.name);
+  if (to.name !== 'rolePermissions') {
+    roleType.value = null
+    roles.value = []
   }
-})
-
-onUnmounted(() => {
-  companyType.value = null;
-  users.value = [];
-  companies.value = [];
-  roles.value = [];
+  next()
 })
 
 </script>
-

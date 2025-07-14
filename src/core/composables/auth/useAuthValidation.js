@@ -7,7 +7,7 @@ const useAuthValidation = () => {
     email: [
       createValidator(validators.required, message.required),
       createValidator(validators.email, message.email),
-      createValidator(validators.maxLength(25), message.maxLength(25)),
+      createValidator(validators.maxLength(100), message.maxLength(100)),
     ],
     password: [
       createValidator(validators.required, message.required),

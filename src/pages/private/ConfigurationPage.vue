@@ -55,6 +55,11 @@ const items = [
     label: 'Usuarios',
     icon: 'manage_accounts',
     to: '/configuration/users'
+  },
+  {
+    label: 'Roles',
+    icon: 'groups',
+    to: '/configuration/roles'
   }
 ]
 </script>

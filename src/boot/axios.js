@@ -44,6 +44,7 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.log('ERROR AL CREAR LA PETICIÓN: ', error);
     return Promise.reject(error);
   }
 );

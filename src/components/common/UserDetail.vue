@@ -11,7 +11,7 @@
     </q-item-section>
     <q-item-section class="q-pa-xs">
       <q-item-label lines="1" class="text-weight-bold" >{{ name }}  {{ lastName }} </q-item-label>
-      <q-item-label caption lines="1">{{ userInfo }}</q-item-label>
+      <q-item-label caption lines="1" class="text-grey-6">{{ userInfo }}</q-item-label>
     </q-item-section>
   </q-item>
 

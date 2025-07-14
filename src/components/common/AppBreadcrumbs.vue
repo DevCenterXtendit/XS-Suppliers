@@ -25,7 +25,17 @@ import { useRoute } from 'vue-router'
 
 // Opcional: mapa de rutas a nombres amigables e iconos
 const breadcrumbLabels = {
-  '':      { label: 'Home', icon: 'home' }
+  '' : { label: 'Inicio', icon: 'home' },
+  'configuration' : { label: 'Configuración empresarial', icon: 'settings'},
+  'company-structure' : { label: 'Estructura de empresa', icon: 'apartment'},
+  'users' : { label: 'Usuarios', icon: 'person'},
+  'roles' : { label: 'Roles', icon: 'groups'},
+  'customers' : { label: 'Clientes', icon: 'business'},
+  'societies-GL' : { label: 'Sociedad GL', icon: 'business'},
+  'societies-FI' : { label: 'Sociedad FI', icon: 'business'},
+  'branches' : { label: 'Segmento', icon: 'business'},
+  'supplier-fields' : { label: 'Campos proveedor', icon: 'format_list_bulleted'},
+  'supplier-fields-configuration' : { label: 'Configuración de campos', icon: 'grading'},
 }
 
 const route = useRoute();

@@ -3,8 +3,8 @@
     <AppBreadcrumbs />
     <div class="text-h6 q-mb-md">Configuración Empresarial</div>
 
-    <div style="max-width: 800px">
-      <div class="row q-col-gutter-md justify-start">
+    <div style="max-width: 800px" class="q-mx-auto">
+      <div class="row q-col-gutter-md justify-center">
         <div
           v-for="item in items"
           :key="item.label"
@@ -49,12 +49,12 @@ const items = [
   {
     label: 'Sociedad GL',
     icon: 'business',
-    to: '/configuration/company-structure/societyGL'
+    to: '/configuration/company-structure/societies-GL'
   },
   {
     label: 'Sociedad FI',
     icon: 'business',
-    to: '/configuration/company-structure/societyFI'
+    to: '/configuration/company-structure/societies-FI'
   },
   {
     label: 'Segmento',

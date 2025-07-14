@@ -1,12 +1,22 @@
 <template>
   <q-expansion-item
     v-if="hasChildren"
-    :icon="item.icon"
-    :label="item.label"
     :to="item.to"
     exact
     class="q-px-sm"
+    active-class="text-secondary"
   >
+    <template v-slot:header>
+      <q-item-section avatar>
+        <q-icon
+          :name="item.icon"
+          color="grey-13"
+        />
+      </q-item-section>
+      <q-item-section>
+        {{ item.label }}
+      </q-item-section>
+    </template>
     <template #expand-icon>
       <q-icon name="expand_more" />
     </template>
@@ -26,9 +36,13 @@
     :to="item.to"
     exact
     class="q-px-lg"
+    active-class="text-secondary"
   >
     <q-item-section avatar>
-      <q-icon :name="item.icon" />
+      <q-icon
+        :name="item.icon"
+        color="grey-13"
+      />
     </q-item-section>
     <q-item-section>
       {{ item.label }}

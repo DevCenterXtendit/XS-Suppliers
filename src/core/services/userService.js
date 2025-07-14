@@ -2,8 +2,15 @@ import { api } from 'boot/axios';
 
 const baseEndpoint = "/users"
 
-const getAll = async () => {
-  const response = await api.get(baseEndpoint);
+const getAll = async (companyTypeId) => {
+  let response = null;
+
+  if(!companyTypeId){
+    response = await api.get(baseEndpoint);
+  }else{
+    response = await api.get(`${baseEndpoint}?companyTypeId=${companyTypeId}`);
+  }
+
   return response;
 };
 

@@ -4,10 +4,20 @@
   show-if-above
   :width="260"
   :breakpoint="1280"
+  bordered
   class="bg-sidebar column no-wrap"
 >
+  <!--User deta-->
+  <user-detail style="height: 80px;"
+    :name="userLogged.name"
+    :lastName="userLogged.lastNames"
+    :userInfo="userLogged.email"
+  />
+
   <!-- Scroll area para navegación -->
-  <q-scroll-area class="col q-mt-sm" :horizontal-thumb-style="{ opacity: 0 }">
+  <q-scroll-area
+    class="col q-mt-sm"
+    :horizontal-thumb-style="{ opacity: 0 }">
     <q-list>
       <MenuItem
         v-for="entry in menu"
@@ -24,6 +34,13 @@
 import { ref } from 'vue';
 import MenuItem from './MenuItem.vue';
 import menu from '../../core/menu.js';
+import useAuth from "src/core/composables/auth/useAuth";
+
+import UserDetail from '../common/UserDetail.vue';
+
+const {
+  userLogged
+} = useAuth()
 
 const drawer = ref(false)
 

@@ -22,6 +22,7 @@ const useAuth = () => {
       name: userResp.name,
       lastNames: userResp.lastNames,
       email: userResp.email,
+      companyType: userResp.companyType
     }
 
     authStore.login(userLogged, userResp.token);
