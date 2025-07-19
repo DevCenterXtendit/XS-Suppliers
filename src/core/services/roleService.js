@@ -22,10 +22,6 @@ const update = async (payload) => {
   return response;
 }
 
-// const eliminate = async() => {
-
-// }
-
 const getPermissions = async(id) => {
   const response = await api.get(`${baseEndpoint}/${id}/permissions`);
   return response;
@@ -36,11 +32,23 @@ const updatePermissions = async (payload) => {
   return response;
 }
 
+const setStatus = async (id, status) => {
+  const response = await api.put(`${baseEndpoint}/${id}/active`, status);
+  return response;
+}
+
+const remove = async (id) => {
+  const response = await api.delete(`${baseEndpoint}/${id}`);
+  return response;
+}
+
 export const roleService = {
   getAllByRoleType,
   getById,
   add,
   update,
   getPermissions,
-  updatePermissions
+  updatePermissions,
+  setStatus,
+  remove
 };

@@ -1,4 +1,4 @@
-// import { Notify } from 'quasar';
+import { Notify } from 'quasar';
 
 export const handleSuccessResponse = (response) => {
   // let resp = {
@@ -7,12 +7,12 @@ export const handleSuccessResponse = (response) => {
   // }
 
   if (response.data) {
-    // if(response.data.message){
-    //   Notify.create({
-    //     message: response.data.message,
-    //     type: 'positive',
-    //   });
-    // }
+    if(response.data.message){
+      Notify.create({
+        message: response.data.message,
+        type: 'positive',
+      });
+    }
   }
 
   // Retorna la respuesta completa si no hay datos específicos

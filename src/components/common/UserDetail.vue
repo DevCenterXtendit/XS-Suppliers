@@ -1,7 +1,6 @@
 <template>
-
-  <q-item
-    class="q-pa-md">
+  <q-item style="height: 80px;"
+    class="q-px-md q-py-none">
     <q-item-section avatar>
       <q-avatar
         color="blue-grey-4"
@@ -14,7 +13,6 @@
       <q-item-label caption lines="1" class="text-grey-6">{{ userInfo }}</q-item-label>
     </q-item-section>
   </q-item>
-
 </template>
 
 <script setup>

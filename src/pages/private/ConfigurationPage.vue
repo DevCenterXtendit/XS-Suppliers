@@ -4,9 +4,9 @@
     <div class="text-h6 q-mb-md">Configuración Empresarial</div>
 
     <div style="max-width: 800px">
-      <div class="row q-col-gutter-md justify-start">
+      <div class="row q-col-gutter-md q-mx-sm justify-start">
         <div
-          v-for="item in items"
+          v-for="item in configurationItems"
           :key="item.label"
           class="col-12 col-sm-6"
         >
@@ -18,7 +18,7 @@
             style="height: 200px;"
           >
             <div class="column full-height flex flex-center">
-              <div class="text-subtitle1 text-bold q-mb-md">
+              <div class="text-subtitle1 text-bold q-mb-md self-start">
                 {{ item.label }}
               </div>
               <q-icon :name="item.icon" size="85px" class="q-my-auto" />
@@ -31,37 +31,25 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
+import useAuth from 'src/core/composables/auth/useAuth';
 import { useRouter } from 'vue-router'
 
+const { filteredMenu } = useAuth();
 const router = useRouter()
 
 const goTo = (to) => {
   if (to) router.push(to)
 }
 
-const items = [
-  {
-    label: 'Estructura de Empresa',
-    icon: 'apartment',
-    to: '/configuration/company-structure'
-  },
-  {
-    label: 'Configuración de campos',
-    icon: 'list_alt',
-    to: '/configuration/fields'
-  },
-  {
-    label: 'Usuarios',
-    icon: 'manage_accounts',
-    to: '/configuration/users'
-  },
-  {
-    label: 'Roles',
-    icon: 'groups',
-    to: '/configuration/roles'
-  }
-]
+const configurationItems = computed(() => {
+  const configuration = filteredMenu.find(item => item.name?.toLowerCase() === 'configuration');
+  if (!configuration || !configuration.children) return [];
+
+  return configuration.children;
+});
+
 </script>
 
 <style scoped>

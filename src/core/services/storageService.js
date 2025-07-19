@@ -15,9 +15,9 @@ export const storageService = {
     }
   },
 
-  setItem(key, value, json=true) {
+  setItem(key, value, isJson=true) {
     try {
-      if(json){
+      if(isJson){
         localStorage.setItem(key, JSON.stringify(value));
       }else{
         localStorage.setItem(key, value);

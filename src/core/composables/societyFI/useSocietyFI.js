@@ -4,8 +4,8 @@ import { societyGlService } from 'src/core/services/societyGlService';
 import { customerService } from 'src/core/services/customerService';
 import { useConfirmDialog } from '../common/useConfirmDialog';
 
-const currentCustomerId = ref(null);
-const currentSocietyGlId = ref(null);
+const currentCustomer = ref(null);
+const currentSocietyGl = ref(null);
 const societyFi = reactive({});
 const societiesFi = ref([]);
 const openSocietyFiForm = ref(false);
@@ -13,14 +13,22 @@ const openSocietyFiForm = ref(false);
 const useSocietyFi = () => {
   const customers = ref([])
   const societiesGl = ref([]);
-  const { confirm } = useConfirmDialog();
+
+  const { showConfirmDialog } = useConfirmDialog();
 
   const initSocietyFi = () => {
     return {
       id: 0,
       code: '',
       name : '',
-      societyGlId: 0
+      rfc: '',
+      societyGlId: 0,
+      address: {
+        street: '',
+        exteriorNumber: null,
+        interiorNumber: null,
+        neighborhoodId : null,
+      }
     }
   }
 
@@ -29,8 +37,8 @@ const useSocietyFi = () => {
   }
 
   const onSelectedCustomer = async () => {
-    societiesGl.value = await societyGlService.getAllByCustomer(currentCustomerId.value);
-    currentSocietyGlId.value = null;
+    societiesGl.value = await societyGlService.getAllByCustomer(currentCustomer.value.id);
+    currentSocietyGl.value = null;
     societiesFi.value = [];
   }
 
@@ -39,7 +47,7 @@ const useSocietyFi = () => {
   }
 
   const getSocietiesFiBySocietyGl = async () => {
-     societiesFi.value = await societyFiService.getAllBySocietyGl(currentSocietyGlId.value);
+     societiesFi.value = await societyFiService.getAllBySocietyGl(currentSocietyGl.value.id);
   }
 
   const getSocietyFi = async (societyFiId) => {
@@ -51,7 +59,7 @@ const useSocietyFi = () => {
 
   const addSocietyFi = () => {
     Object.assign(societyFi, initSocietyFi());
-    societyFi.societyGlId = currentSocietyGlId.value;
+    societyFi.societyGlId = currentSocietyGl.value.id;
     openSocietyFiForm.value = true;
   }
 
@@ -63,21 +71,32 @@ const useSocietyFi = () => {
     }
     openSocietyFiForm.value = false;
     await getSocietiesFiBySocietyGl();
+    console.log(societyFi);
   }
 
-  const removeSpecialtyFi = async (societyFiId) => {
-    const confirmed = await confirm('¿Estás seguro que desea eliminar esta sociedad FI?');
+  const setSocietyFiStatus = async (status, societyFi) => {
+    const confirmed = await showConfirmDialog(`¿Estás seguro que desea ${status ? 'activar' : 'desactivar'} la sociedad FI ${societyFi.name}?`);
 
     if (confirmed) {
-      console.log('se elimina la sociedad FI', societyFiId)
+      // await userService.setStatus(user.id, {isActive: status })
+      // user.isActive = status;
+      console.log('se elimina la sociedad FI');
+    }
+  }
+
+  const removeSocietyFi = async (societyFiId) => {
+    const confirmed = await showConfirmDialog('¿Estás seguro que desea eliminar esta sociedad FI?');
+
+    if (confirmed) {
+      console.log('se elimina la sociedad FI', societyFiId);
     }
   };
 
 
   return{
     customers,
-    currentCustomerId,
-    currentSocietyGlId,
+    currentCustomer,
+    currentSocietyGl,
     societiesGl,
     societiesFi,
     societyFi,
@@ -89,7 +108,8 @@ const useSocietyFi = () => {
     getSocietyFi,
     addSocietyFi,
     handleSaveSocietyFi,
-    removeSpecialtyFi
+    setSocietyFiStatus,
+    removeSocietyFi
   }
 }
 

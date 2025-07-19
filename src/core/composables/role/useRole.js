@@ -3,12 +3,16 @@ import { roleService } from "src/core/services/roleService";
 
 import { useRouter } from 'vue-router';
 
+//common
+import { useConfirmDialog } from 'src/core/composables/common/useConfirmDialog';
+
 const roleType = ref(null);
 const roles = ref([]);
 const role = reactive({});
 const openRoleForm = ref(false);
 
 const useRole = () => {
+  const { showConfirmDialog } = useConfirmDialog();
 
   const router = useRouter();
 
@@ -45,7 +49,6 @@ const useRole = () => {
     }else{
       await roleService.update(role);
     }
-    // console.log('continua el código aunque se redirige a los permisos');
     if(roleId != null)
     {
        router.push({
@@ -67,16 +70,37 @@ const useRole = () => {
     })
   }
 
+  const setRoleStatus = async (status, role) => {
+    const confirmed = await showConfirmDialog(`¿Estás seguro que desea ${status ? 'activar' : 'desactivar'} el rol ${role.name}?`);
+
+    if (confirmed) {
+      await roleService.setStatus(role.id, {isActive: status })
+      role.isActive = status;
+    }
+  }
+
+  const removeRole = async (role) => {
+    const confirmed = await showConfirmDialog(`¿Estás seguro que desea eliminar el rol ${role.name}?`);
+
+    if (confirmed) {
+        await roleService.remove(role.id);
+        await getRoles();
+    }
+  }
+
   return {
+    roleType,
+    roles,
+    role,
+    openRoleForm,
+
     getRoles,
     getRole,
     addRole,
     handleSaveRole,
     configurePermissions,
-    roleType,
-    roles,
-    role,
-    openRoleForm,
+    setRoleStatus,
+    removeRole
   }
 }
 

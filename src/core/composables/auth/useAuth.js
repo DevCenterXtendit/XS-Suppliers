@@ -13,7 +13,11 @@ const useAuth = () => {
     password:''
   });
 
-  const { userLogged, isLoggedIn } = useAuthStore();
+  const { userLogged,
+          permissions,
+          isLoggedIn,
+          filteredMenu
+        } = authStore;
 
   const handleLogin = async () => {
     const userResp = await authenticate(auth);
@@ -25,7 +29,7 @@ const useAuth = () => {
       companyType: userResp.companyType
     }
 
-    authStore.login(userLogged, userResp.token);
+    authStore.login(userLogged, userResp.token, userResp.userPermissions);
     router.push('/');
   }
 
@@ -34,13 +38,24 @@ const useAuth = () => {
     router.push('/login');
   }
 
+  const getPermissionsByModules = (moduleNames = []) => {
+    if (!Array.isArray(moduleNames) || moduleNames.length === 0) {
+      return permissions;
+    }
+    return permissions.filter(permission =>
+      moduleNames.includes(permission.moduleName)
+    );
+  }
+
   return {
     auth,
     userLogged,
     isLoggedIn,
+    filteredMenu,
 
     handleLogin,
-    handleLogout
+    handleLogout,
+    getPermissionsByModules
   }
 }
 

@@ -6,11 +6,15 @@ const useSocietyFiValidation = () => {
   const societyFiRules = {
     code: [
       createValidator(validators.required, message.required),
-      createValidator(validators.maxLength(10), message.maxLength(10)),
+      createValidator(validators.maxLength(4), message.maxLength(4)),
     ],
     name: [
       createValidator(validators.required, message.required),
-      createValidator(validators.maxLength(50), message.maxLength(50)),
+      createValidator(validators.maxLength(60), message.maxLength(60)),
+    ],
+    rfc: [
+      createValidator(validators.required, message.required),
+      createValidator(validators.maxLength(12), message.maxLength(12)),
     ],
   };
 

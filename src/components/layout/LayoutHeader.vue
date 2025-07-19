@@ -18,7 +18,15 @@
       </q-toolbar-title>
 
       <q-space></q-space>
-      <theme-btn class="q-mr-xs"></theme-btn>
+      <q-chip
+        dense
+        color="secondary"
+        icon="verified_user"
+        text-color="white"
+      >
+        {{ userLogged.companyType }}
+      </q-chip>
+      <theme-btn class="q-mx-xs"></theme-btn>
       <q-btn
         dense
         flat
@@ -50,6 +58,9 @@ import ThemeBtn from '../../components/common/ThemeBtn.vue';
 
 import useAuth from 'src/core/composables/auth/useAuth';
 
-const { handleLogout } = useAuth();
+const {
+  userLogged,
+  handleLogout
+} = useAuth();
 
 </script>

@@ -3,7 +3,7 @@ import { useQuasar } from 'quasar';
 export function useConfirmDialog() {
   const $q = useQuasar();
 
-  const confirm = (message, title = 'Confirmar', okLabel = 'Confirmar', cancelLabel = 'Cancelar') => {
+  const showConfirmDialog = (message, title = 'Confirmar', okLabel = 'Confirmar', cancelLabel = 'Cancelar') => {
     return new Promise((resolve) => {
       $q.dialog({
         title,
@@ -36,5 +36,5 @@ export function useConfirmDialog() {
     });
   };
 
-  return { confirm };
+  return { showConfirmDialog };
 }

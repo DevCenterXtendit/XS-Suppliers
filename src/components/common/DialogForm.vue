@@ -20,7 +20,7 @@
       <q-card-section :class="isMobile ? 'q-pa-md': 'q-px-md'">
         <slot name="content" ></slot>
       </q-card-section>
-      <q-card-actions align="right" class="q-px-md">
+      <q-card-actions align="right" class="q-px-md q-pt-none">
         <slot name="actions"></slot>
       </q-card-actions>
     </q-card>

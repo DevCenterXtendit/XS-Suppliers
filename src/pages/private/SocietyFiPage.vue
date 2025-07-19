@@ -1,49 +1,51 @@
 <template>
-   <q-page class="q-pa-md">
+   <q-page class="q-pa-md column no-wrap">
     <AppBreadcrumbs />
     <div class="text-h6">Sociedades FI</div>
-    <q-card flat class="q-pa-md q-my-md">
-      <div class="row q-gutter-md">
-         <div class="col-12 col-sm-4 col-md-3">
+    <q-card
+      v-if="userLogged.companyType == COMPANY_TYPE.XTENDIT"
+      flat
+      class="q-pa-md q-mt-sm"
+    >
+      <div class="row q-col-gutter-sm">
+         <div class="col-12 col-sm-6 col-md-3">
           <q-select
-            v-model="currentCustomerId"
+            v-model="currentCustomer"
             @update:model-value="onSelectedCustomer"
             :options="customers"
             dense
             emit-value
             label="Seleccione Cliente"
             map-options
-            outlined
             option-label="name"
-            option-value="id"
+            outlined
           >
           </q-select>
         </div>
-        <div class="col-12 col-sm-4 col-md-3">
+        <div class="col-12 col-sm-6 col-md-3">
           <q-select
-            v-model="currentSocietyGlId"
+            v-model="currentSocietyGl"
             @update:model-value="onSelectedSocietyGl"
-            :disable="!currentCustomerId"
+            :disable="!currentCustomer"
             :options="societiesGl"
             dense
             emit-value
             label="Seleccione Sociedad GL"
             map-options
-            outlined
             option-label="name"
-            option-value="id"
+            outlined
           >
           </q-select>
         </div>
       </div>
     </q-card>
     <q-card flat
-      class="row q-pa-md q-my-sm"
+      class="row q-pa-md q-my-md"
     >
       <div class="col-4 col-sm-6">
         <q-btn
           @click="addSocietyFi"
-          :disable="!currentSocietyGlId"
+          :disable="!currentSocietyGl"
           color="primary"
           icon="add_circle_outline"
           label="Añadir"
@@ -68,19 +70,24 @@
 
     <q-card
       flat
-      class="q-mt-md">
-      <q-card-section class="">
-        <q-table
-          flat
-          :filter="filter"
-          :rows="societiesFi"
-          :columns="columns"
-          row-key="id"
-        >
+       class="col column no-wrap q-px-sm"
+    >
+      <q-table
+        :columns="columns"
+        :filter="filter"
+        :pagination="initialPagination"
+        :rows="societiesFi"
+        color="secondary"
+        flat
+        row-key="id"
+        class="col"
+      >
         <template v-slot:body-cell-status="props">
           <q-td :props="props">
             <q-toggle
-              v-model="props.row.isActive"
+              @update:model-value="val => setSocietyFiStatus(val, props.row)"
+              :model-value="props.row.isActive"
+              color="secondary"
               size="sm"
             />
           </q-td>
@@ -95,7 +102,7 @@
               icon="edit"
             />
             <q-btn
-              @click="removeSpecialtyFi(props.row.id)"
+              @click="removeSocietyFi(props.row.id)"
               dense
               color="grey-7"
               class="q-ml-sm"
@@ -104,8 +111,7 @@
             />
           </q-td>
         </template>
-        </q-table>
-      </q-card-section>
+      </q-table>
     </q-card>
     <societyFi-form/>
   </q-page>
@@ -114,24 +120,35 @@
 <script setup>
 import {ref, onMounted } from 'vue';
 import useSocietyFi from 'src/core/composables/societyFI/useSocietyFI';
+import useAuth from 'src/core/composables/auth/useAuth';
 
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 import societyFiForm from 'src/components/societyFi/societyFiForm.vue';
+import { COMPANY_TYPE } from 'src/core/constants/company-type';
 
 const {
   customers,
   societiesGl,
-  currentCustomerId,
-  currentSocietyGlId,
+  currentCustomer,
+  currentSocietyGl,
   societiesFi,
   getCustomers,
   onSelectedCustomer,
   onSelectedSocietyGl,
   getSocietyFi,
   addSocietyFi,
-  removeSpecialtyFi
+  setSocietyFiStatus,
+  removeSocietyFi
 
 } = useSocietyFi();
+
+const {
+  userLogged
+} = useAuth();
+
+const initialPagination = {
+  rowsPerPage: 10,
+};
 
 let filter = ref('');
 

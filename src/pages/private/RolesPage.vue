@@ -56,6 +56,7 @@
       <q-table
         :columns="columns"
         :filter="filter"
+        :pagination="initialPagination"
         :rows="roles"
         color="secondary"
         flat
@@ -65,7 +66,8 @@
         <template v-slot:body-cell-status="props">
           <q-td :props="props">
             <q-toggle
-              v-model="props.row.isActive"
+              @update:model-value="val => setRoleStatus(val, props.row)"
+              :model-value="props.row.isActive"
               color="secondary"
               size="sm"
             />
@@ -73,28 +75,26 @@
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
-            <q-btn dense
-              flat
+            <q-btn @click="getRole(props.row.id)"
               color="grey-7"
+              dense
+              flat
               icon="edit"
-              @click="getRole(props.row.id)"
-            >
-            </q-btn>
-              <q-btn dense
-              flat
+            />
+            <q-btn @click="configurePermissions(props.row)"
               color="grey-7"
-              class="q-ml-sm"
+              dense
+              flat
               icon="settings"
-              @click="configurePermissions(props.row)"
-            >
-            </q-btn>
-            <q-btn dense
-              flat
-              color="grey-7"
               class="q-ml-sm"
+            />
+            <q-btn @click="removeRole(props.row)"
+              color="grey-7"
+              dense
+              flat
               icon="delete"
-            >
-            </q-btn>
+              class="q-ml-sm"
+            />
           </q-td>
         </template>
       </q-table>
@@ -114,13 +114,19 @@ import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 import roleForm from 'src/components/role/roleForm.vue';
 
 const {
+  roleType,
+  roles,
   getRoles,
   getRole,
   addRole,
   configurePermissions,
-  roleType,
-  roles
+  setRoleStatus,
+  removeRole
 } = useRole();
+
+const initialPagination = {
+  rowsPerPage: 10,
+};
 
 const filter = ref('');
 

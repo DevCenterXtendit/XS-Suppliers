@@ -2,8 +2,11 @@
   <q-page class="q-pa-md column no-wrap">
     <AppBreadcrumbs />
     <div class="text-h6">Usuarios</div>
-    <q-card v-if="userLogged.companyType == COMPANY_TYPE.XTENDIT"
-      flat class="row q-pa-md q-mt-sm">
+    <q-card
+      v-if="userLogged.companyType == COMPANY_TYPE.XTENDIT"
+      flat
+      class="row q-pa-md q-mt-sm"
+    >
       <div class="col-12 col-sm-6 col-md-4">
         <q-select
             v-model="companyType"
@@ -64,7 +67,8 @@
         <template v-slot:body-cell-status="props">
           <q-td :props="props">
             <q-toggle
-              v-model="props.row.isActive"
+              @update:model-value="val => setUserStatus(val, props.row)"
+              :model-value="props.row.isActive"
               color="secondary"
               size="sm"
             />
@@ -72,17 +76,18 @@
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
-            <q-btn dense
-              flat
+            <q-btn  @click="getUser(props.row.id)"
               color="grey-7"
+              dense
+              flat
               icon="edit"
-              @click="getUser(props.row.id)"
             />
-            <q-btn dense
-              flat
+            <q-btn @click="removeUser(props.row)"
               color="grey-7"
-              class="q-ml-sm"
+              dense
+              flat
               icon="delete"
+              class="q-ml-sm"
             />
           </q-td>
         </template>
@@ -112,7 +117,9 @@ const {
   getCompanies,
   getRoles,
   getUser,
-  addUser
+  addUser,
+  setUserStatus,
+  removeUser
 } = useUser();
 
 const {
@@ -147,14 +154,14 @@ onMounted(async () => {
   if (userLogged.companyType !== COMPANY_TYPE.XTENDIT){
     await initPage();
   }
-})
+});
 
 onUnmounted(() => {
   companyType.value = null;
   users.value = [];
   companies.value = [];
   roles.value = [];
-})
+});
 
 </script>
 

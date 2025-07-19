@@ -2,8 +2,11 @@
   <q-page class="q-pa-md">
     <AppBreadcrumbs />
     <div class="text-h6">Segmentos</div>
-    <q-card flat class="q-pa-md q-my-md">
-      <div class="row q-gutter-md">
+    <q-card
+      flat
+      class="q-pa-md q-mt-sm"
+    >
+      <div class="row q-col-gutter-sm">
          <div class="col-12 col-sm-4 col-md-3">
           <q-select
             v-model="currentCustomerId"

@@ -4,6 +4,9 @@ import { customerService } from 'src/core/services/customerService';
 import { supplierService } from 'src/core/services/supplierService';
 import { roleService } from 'src/core/services/roleService';
 
+//common
+import { useConfirmDialog } from 'src/core/composables/common/useConfirmDialog';
+
 const companyType = ref(null);
 const users = ref([]);
 const user = reactive({});
@@ -12,6 +15,7 @@ const roles = ref([]);
 const openUserForm = ref(false);
 
 const useUser = () => {
+  const { showConfirmDialog } = useConfirmDialog();
 
   const initUser = () => {
     return {
@@ -62,7 +66,7 @@ const useUser = () => {
     openUserForm.value = true;
   }
 
-   const handleSaveUser = async () => {
+  const handleSaveUser = async () => {
     if(user.id == 0){
       await userService.add(user);
     }else{
@@ -70,6 +74,24 @@ const useUser = () => {
     }
     openUserForm.value = false;
     await getUsers();
+  }
+
+  const setUserStatus = async (status, user) => {
+    const confirmed = await showConfirmDialog(`¿Estás seguro que desea ${status ? 'activar' : 'desactivar'} el usuario ${user.name}?`);
+
+    if (confirmed) {
+      await userService.setStatus(user.id, {isActive: status })
+      user.isActive = status;
+    }
+  }
+
+  const removeUser = async (user) => {
+    const confirmed = await showConfirmDialog(`¿Estás seguro que desea eliminar el usuario ${user.name}?`);
+
+    if (confirmed) {
+       await userService.remove(user.id);
+       await getUsers();
+    }
   }
 
   return {
@@ -86,7 +108,9 @@ const useUser = () => {
     getCompanies,
     getRoles,
     getUser,
-    handleSaveUser
+    handleSaveUser,
+    setUserStatus,
+    removeUser,
   }
 }
 
