@@ -6,9 +6,9 @@
         @update:model-value="onTypedPostalCode"
         :rules="addressRules.postalCode"
         dense
-        label="Código postal"
-        no-error-icon
+        label="Código postal*"
         maxlength="5"
+        no-error-icon
         outlined
       >
         <template v-slot:prepend>
@@ -24,7 +24,7 @@
         :rules="addressRules.neighborhoodId"
         dense
         emit-value
-        label="Seleccione Colonia"
+        label="Seleccione Colonia*"
         map-options
         option-label="name"
         option-value="id"
@@ -62,7 +62,7 @@
         v-model="addressFromFather.street"
         :rules="addressRules.street"
         dense
-        label="Calle"
+        label="Calle*"
         no-error-icon
         outlined
       >
@@ -76,7 +76,7 @@
         v-model="addressFromFather.exteriorNumber"
         :rules="addressRules.exteriorNumber"
         dense
-        label="Número exterior"
+        label="Número exterior*"
         maxlength="8"
         no-error-icon
         outlined
@@ -138,7 +138,7 @@ const addressFromFather = defineModel('address', {
     street: '',
     exteriorNumber: '',
     interiorNumber: null,
-    neighborhoodId : null,
+    neighborhoodId : '',
   }
 })
 

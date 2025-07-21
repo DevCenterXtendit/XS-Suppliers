@@ -1,5 +1,5 @@
 <template>
-  <dialog-form v-model="openSocietyFiForm" :width="600">
+  <dialog-form v-model="openSocietyFiForm" :width="700">
     <template #header>
       {{ `${societyFi.id > 0 ? "Editar" : "Agregar"} Sociedad FI` }}
     </template>

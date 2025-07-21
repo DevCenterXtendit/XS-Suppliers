@@ -1,7 +1,10 @@
 export const validators = {
   required: v => !!v,
   minLength: length => val => (val.length >= length),
-  maxLength: length => val => (val.length <= length),
+  maxLength: length => val => {
+    if (val == null || val === '') return true;
+    return val.length <= length;
+  },
   email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
   numeric: v => /^(0|[1-9][0-9]*)$/.test(v),
   alphanumeric: v => /^[-a-zA-Z0-9_ ]*$/.test(v),
