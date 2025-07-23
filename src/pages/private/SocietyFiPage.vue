@@ -3,12 +3,13 @@
     <AppBreadcrumbs />
     <div class="text-h6">Sociedades FI</div>
     <q-card
-      v-if="userLogged.companyType == COMPANY_TYPE.XTENDIT"
       flat
       class="q-pa-md q-mt-sm"
     >
       <div class="row q-col-gutter-sm">
-         <div class="col-12 col-sm-6 col-md-3">
+        <div
+          v-if="userLogged.companyType == COMPANY_TYPE.XTENDIT"
+          class="col-12 col-sm-6 col-md-3">
           <q-select
             v-model="currentCustomer"
             @update:model-value="onSelectedCustomer"
@@ -26,7 +27,7 @@
           <q-select
             v-model="currentSocietyGl"
             @update:model-value="onSelectedSocietyGl"
-            :disable="!currentCustomer"
+            :disable="!currentCustomer && userLogged.companyType == COMPANY_TYPE.XTENDIT"
             :options="societiesGl"
             dense
             emit-value
@@ -118,7 +119,7 @@
 </template>
 
 <script setup>
-import {ref, onMounted } from 'vue';
+import {ref, onMounted, onUnmounted } from 'vue';
 import useSocietyFi from 'src/core/composables/societyFI/useSocietyFI';
 import useAuth from 'src/core/composables/auth/useAuth';
 
@@ -133,8 +134,8 @@ const {
   currentSocietyGl,
   societiesFi,
   getCustomers,
-  onSelectedCustomer,
-  onSelectedSocietyGl,
+  getSocietiesGl,
+  getSocietiesFiBySocietyGl,
   getSocietyFi,
   addSocietyFi,
   setSocietyFiStatus,
@@ -159,8 +160,30 @@ const columns = [
   { name: 'actions', label: 'ACCIONES', align: 'center' , field: 'actions'},
 ]
 
+const onSelectedCustomer = async () => {
+  await getSocietiesGl();
+  currentSocietyGl.value = null;
+  societiesFi.value = [];
+}
+
+const onSelectedSocietyGl = async () => {
+  await getSocietiesFiBySocietyGl();
+}
+
 onMounted(async() => {
-  await getCustomers();
+  if(userLogged.companyType == COMPANY_TYPE.XTENDIT){
+    await getCustomers();
+  }else{
+    await getSocietiesGl();
+  }
+})
+
+onUnmounted(() => {
+  customers.value = [];
+  societiesGl.value = [];
+  currentCustomer.value = null;
+  currentSocietyGl.value = null;
+  societiesFi.value = [];
 })
 
 </script>

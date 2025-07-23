@@ -5,7 +5,8 @@ export default {
   onlyLetters: 'Solo se permiten letras',
   onlyNumbers: 'Solo se permiten números',
   alphanumeric: 'Formato incorrecto',
-  email: 'Formato email invalido: MiCorreo@Appointease.com',
+  email: 'Formato email invalido: MiCorreo@email.com',
   passwordRepeat: 'Las contraseñas deben coincidir',
-  phone: 'Debe ingresar un número telefonico válido'
+  phone: 'Debe ingresar un número telefonico válido',
+  companyRFC: 'Formato RFC incorrecto: AAA010101ABC'
 }

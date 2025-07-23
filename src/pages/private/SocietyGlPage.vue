@@ -1,12 +1,14 @@
 <template>
-   <q-page class="q-pa-md">
+   <q-page class="q-pa-md column no-wrap">
     <AppBreadcrumbs />
     <div class="text-h6">Sociedades GL</div>
-
-    <q-card flat class="row q-pa-md q-my-md">
+    <q-card
+      v-if="userLogged.companyType == COMPANY_TYPE.XTENDIT"
+      flat
+      class="row q-pa-md q-mt-sm">
       <div class="col-12 col-sm-6 col-md-4">
         <q-select
-          v-model="currentCustomerId"
+          v-model="currentCustomer"
           @update:model-value="onSelectedCustomer"
           :options="customers"
           dense
@@ -15,19 +17,18 @@
           map-options
           outlined
           option-label="name"
-          option-value="id"
         >
         </q-select>
       </div>
     </q-card>
 
     <q-card flat
-      class="row q-pa-md q-my-sm"
+      class="row q-pa-md q-my-md"
     >
       <div class="col-4 col-sm-6">
         <q-btn
           @click="addSocietyGl"
-          :disable="currentCustomerId == null"
+          :disable="!currentCustomer && userLogged.companyType == COMPANY_TYPE.XTENDIT"
           color="primary"
           icon="add_circle_outline"
           label="Añadir"
@@ -52,19 +53,22 @@
 
     <q-card
       flat
-      class="q-mt-md">
-      <q-card-section class="">
-        <q-table
-          flat
-          :filter="filter"
-          :rows="societiesGl"
-          :columns="columns"
-          row-key="id"
-        >
+      class="col column no-wrap q-px-sm">
+      <q-table
+        :columns="columns"
+        :filter="filter"
+        :pagination="initialPagination"
+        :rows="societiesGl"
+        color="secondary"
+        flat
+        row-key="id"
+        class="col"
+      >
         <template v-slot:body-cell-status="props">
           <q-td :props="props">
             <q-toggle
               v-model="props.row.isActive"
+              color="secondary"
               size="sm"
             />
           </q-td>
@@ -87,8 +91,7 @@
             />
           </q-td>
         </template>
-        </q-table>
-      </q-card-section>
+      </q-table>
     </q-card>
   </q-page>
   <societyGl-form/>
@@ -97,19 +100,29 @@
 <script setup>
 import {ref, onMounted } from 'vue';
 import useSocietyGL from 'src/core/composables/societyGL/useSocietyGL';
+import useAuth from 'src/core/composables/auth/useAuth';
 
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 import societyGlForm from 'src/components/societyGl/societyGlForm.vue';
+import { COMPANY_TYPE } from 'src/core/constants/company-type';
 
 const {
   customers,
-  currentCustomerId,
+  currentCustomer,
   societiesGl,
   getCustomers,
-  onSelectedCustomer,
+  getSocietiesGl,
   getSocietyGl,
   addSocietyGl,
 } = useSocietyGL();
+
+const {
+  userLogged
+} = useAuth();
+
+const initialPagination = {
+  rowsPerPage: 10,
+};
 
 let filter = ref('');
 
@@ -120,8 +133,22 @@ const columns = [
   { name: 'actions', label: 'ACCIONES', align: 'center' , field: 'actions'},
 ]
 
+const onSelectedCustomer = async () => {
+  await getSocietiesGl();
+}
+
 onMounted(async() => {
-  await getCustomers();
+  if (userLogged.companyType == COMPANY_TYPE.XTENDIT){
+    await getCustomers();
+  }else{
+    await getSocietiesGl();
+  }
+})
+
+onMounted(() => {
+  customers.value = [];
+  currentCustomer.value = null;
+  societiesGl.value = [];
 })
 
 </script>

@@ -1,14 +1,16 @@
 import { ref, reactive } from 'vue'
 import { societyGlService } from 'src/core/services/societyGlService';
 import { customerService } from 'src/core/services/customerService';
+import { useConfirmDialog } from '../common/useConfirmDialog';
 
-const currentCustomerId = ref(null);
+const currentCustomer = ref(null);
 const societyGl = reactive({});
 const societiesGl = ref([]);
 const openSocietyGlForm = ref(false);
 
 const  useSocietyGL = () =>  {
   const customers = ref([]);
+  const { showConfirmDialog } = useConfirmDialog();
 
   const initSocietyGl = () => {
     return {
@@ -23,13 +25,9 @@ const  useSocietyGL = () =>  {
     customers.value = await customerService.getAll();
   }
 
-  const onSelectedCustomer = async (customerId) => {
-    currentCustomerId.value = customerId;
-    await getSocietiesGlByCustomer();
-  }
-
-  const getSocietiesGlByCustomer = async () => {
-    societiesGl.value = await societyGlService.getAllByCustomer(currentCustomerId.value);
+  const getSocietiesGl = async () => {
+    const idToUse = currentCustomer?.value?.id ?? null;
+    societiesGl.value = await societyGlService.getAll(idToUse);
   }
 
   const getSocietyGl = async (societyGlId) => {
@@ -41,7 +39,7 @@ const  useSocietyGL = () =>  {
 
   const addSocietyGl = () => {
     Object.assign(societyGl, initSocietyGl());
-    societyGl.customerId = currentCustomerId.value;
+    societyGl.customerId = currentCustomer?.value?.id ?? null;
     openSocietyGlForm.value = true;
   }
 
@@ -52,22 +50,41 @@ const  useSocietyGL = () =>  {
       await societyGlService.update(societyGl);
     }
     openSocietyGlForm.value = false;
-    await getSocietiesGlByCustomer();
+    await getSocietiesGl();
+  }
+
+  const setSocietyGlStatus = async (status, societyGl) => {
+    const confirmed = await showConfirmDialog(`¿Estás seguro que desea ${status ? 'activar' : 'desactivar'} la sociedad FI ${societyGl.name}?`);
+
+    if (confirmed) {
+      // await userService.setStatus(user.id, {isActive: status })
+      // user.isActive = status;
+      console.log('se elimina la sociedad Gl');
+    }
+  }
+
+  const removeSocietyGl = async (societyGlId) => {
+    const confirmed = await showConfirmDialog('¿Estás seguro que desea eliminar esta sociedad GL?');
+
+    if (confirmed) {
+      console.log('se elimina la sociedad Gl', societyGlId);
+    }
   }
 
   return{
     customers,
-    currentCustomerId,
+    currentCustomer,
     societiesGl,
     societyGl,
     openSocietyGlForm,
 
     getCustomers,
-    onSelectedCustomer,
-    getSocietiesGlByCustomer,
+    getSocietiesGl,
     getSocietyGl,
     addSocietyGl,
     handleSaveSocietyGl,
+    setSocietyGlStatus,
+    removeSocietyGl
   }
 
 }

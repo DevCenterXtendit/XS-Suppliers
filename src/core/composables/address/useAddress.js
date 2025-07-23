@@ -9,25 +9,30 @@ const useAddress = () => {
 
   const neighborhoods = ref([]);
   const noAddressesFound = ref(false);
+  const searching = ref(false);
 
   const getAddressesByPostalCode = async (postalCode) => {
-     const addresses = await addressService.getAllByPostalCode(postalCode);
+    searching.value = true;
+    const addresses = await addressService.getAllByPostalCode(postalCode);
 
-     if( addresses != null ){
+    if( addresses != null ){
       address.value.state = addresses.state;
       address.value.municipality = addresses.municipality;
       neighborhoods.value = addresses.neighborhoods;
       noAddressesFound.value = false;
-     }else{
+    }else{
       noAddressesFound.value = true;
       address.value = {};
-     }
+    }
+
+    searching.value = false;
   }
 
   return {
     address,
     neighborhoods,
     noAddressesFound,
+    searching,
     getAddressesByPostalCode,
   }
 }

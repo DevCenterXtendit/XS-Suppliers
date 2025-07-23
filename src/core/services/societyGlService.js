@@ -2,14 +2,9 @@ import { api } from 'boot/axios';
 
 const baseEndpoint = "/societiesGl"
 
-const getAll = async () => {
-  const response = await api.get(baseEndpoint);
-  return response;
-};
-
-const getAllByCustomer = async (customerId) => {
-  const response = await api.get(`Customers/${customerId}${baseEndpoint}`);
-  return response;
+const getAll = async (customerId) => {
+  const params = customerId ? `?customerId=${customerId}` : '';
+  return await api.get(`${baseEndpoint}${params}`);
 };
 
 const getById = async (id) => {
@@ -30,7 +25,6 @@ const update = async (societyGl) => {
 export const societyGlService = {
     add,
     getAll,
-    getAllByCustomer,
     getById,
     update,
 };

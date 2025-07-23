@@ -4,7 +4,10 @@
       <q-input
         v-model="addressFromFather.postalCode"
         @update:model-value="onTypedPostalCode"
+        :disable="searching"
         :rules="addressRules.postalCode"
+        :loading="searching"
+        debounce="1000"
         dense
         label="Código postal*"
         maxlength="5"
@@ -102,14 +105,13 @@
       </q-input>
     </div>
 
-    <div class="col-12 flex">
+    <div class="col-12 flex justify-end">
       <q-chip v-if="noAddressesFound"
         dense
         square color="negative"
         text-color="white"
         icon="place"
-        label="No se encontraron colonias con el código postal"
-        class="self-center"
+        :label="`Sin resultados para el código postal: ${addressFromFather.postalCode}`"
       />
     </div>
   </div>
@@ -124,6 +126,7 @@ const {
   address,
   neighborhoods,
   noAddressesFound,
+  searching,
   getAddressesByPostalCode
 } = useAddress();
 
@@ -143,6 +146,7 @@ const addressFromFather = defineModel('address', {
 })
 
 const onTypedPostalCode = (value) => {
+  console.log(value);
   if (value.length == 5) {
     getAddressesByPostalCode(value);
   }

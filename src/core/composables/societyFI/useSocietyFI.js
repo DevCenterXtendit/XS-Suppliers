@@ -23,9 +23,10 @@ const useSocietyFi = () => {
       name : '',
       rfc: '',
       societyGlId: 0,
+      customerId: null,
       address: {
         street: '',
-        exteriorNumber: null,
+        exteriorNumber: '',
         interiorNumber: null,
         neighborhoodId : null,
       }
@@ -36,18 +37,13 @@ const useSocietyFi = () => {
     customers.value = await customerService.getAll();
   }
 
-  const onSelectedCustomer = async () => {
-    societiesGl.value = await societyGlService.getAllByCustomer(currentCustomer.value.id);
-    currentSocietyGl.value = null;
-    societiesFi.value = [];
-  }
-
-  const onSelectedSocietyGl = async () => {
-    await getSocietiesFiBySocietyGl();
+  const getSocietiesGl = async () => {
+    const idToUse = currentCustomer?.value?.id ?? null;
+    societiesGl.value = await societyGlService.getAll(idToUse);
   }
 
   const getSocietiesFiBySocietyGl = async () => {
-     societiesFi.value = await societyFiService.getAllBySocietyGl(currentSocietyGl.value.id);
+    societiesFi.value = await societyFiService.getAllBySocietyGl(currentSocietyGl.value.id);
   }
 
   const getSocietyFi = async (societyFiId) => {
@@ -59,6 +55,7 @@ const useSocietyFi = () => {
 
   const addSocietyFi = () => {
     Object.assign(societyFi, initSocietyFi());
+    societyFi.customerId = currentCustomer?.value?.id ?? null;
     societyFi.societyGlId = currentSocietyGl.value.id;
     openSocietyFiForm.value = true;
   }
@@ -71,7 +68,6 @@ const useSocietyFi = () => {
     }
     openSocietyFiForm.value = false;
     await getSocietiesFiBySocietyGl();
-    console.log(societyFi);
   }
 
   const setSocietyFiStatus = async (status, societyFi) => {
@@ -103,8 +99,8 @@ const useSocietyFi = () => {
     openSocietyFiForm,
 
     getCustomers,
-    onSelectedCustomer,
-    onSelectedSocietyGl,
+    getSocietiesGl,
+    getSocietiesFiBySocietyGl,
     getSocietyFi,
     addSocietyFi,
     handleSaveSocietyFi,

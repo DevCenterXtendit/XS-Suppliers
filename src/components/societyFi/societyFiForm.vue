@@ -83,6 +83,7 @@ import useSocietyFiValidation from 'src/core/composables/societyFI/useSocietyFiV
 
 //components
 import AddressForm from '../common/AddressForm.vue';
+import { onMounted } from 'vue';
 
 const {
   societyFi,
@@ -91,4 +92,8 @@ const {
 } = useSocietyFi();
 
 const { societyFiRules } = useSocietyFiValidation();
+
+onMounted(() => {
+  console.log('ya se monto');
+})
 </script>
