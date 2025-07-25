@@ -7,7 +7,8 @@ export const validators = {
   },
   email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
   numeric: v => /^(0|[1-9][0-9]*)$/.test(v),
-  alphanumeric: v => /^[-a-zA-Z0-9_ ]*$/.test(v),
+  alphanumeric: v => /^[-a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ]*$/.test(v),
+  alphanumericWithSpaces :  v => /^[-a-zA-Z0-9_., áéíóúÁÉÍÓÚñÑüÜ]*$/.test(v),
   phone: v => /^(\(\+?\d{2,3}\)[\*|\s|\-|\.]?(([\d][\*|\s|\-|\.]?){6})(([\d][\s|\-|\.]?){2})?|(\+?[\d][\s|\-|\.]?){8}(([\d][\s|\-|\.]?){2}(([\d][\s|\-|\.]?){2})?)?)$/.test(v),
   companyRFC: v => /^[A-ZÑ&]{3}\d{6}[A-Z0-9]{3}$/.test(v),
 }

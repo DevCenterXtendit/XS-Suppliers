@@ -55,7 +55,8 @@
             </q-input>
           </div>
 
-          <div v-if="companyType?.name != COMPANY_TYPE.XTENDIT && userLogged.companyType == COMPANY_TYPE.XTENDIT"
+          <div v-if="companyType?.name != COMPANY_TYPE.XTENDIT
+                    && userLogged.companyType == COMPANY_TYPE.XTENDIT"
             class="col-12 col-sm-6 col-md-6">
             <q-select
               v-model="user.companyId"

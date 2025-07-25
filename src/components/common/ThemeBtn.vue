@@ -1,6 +1,6 @@
 <template>
   <q-btn
-    @click="setTheme"
+    @click="toggleTheme"
     :icon="icon"
     :size=size
     dense
@@ -11,8 +11,8 @@
 </template>
 
 <script setup>
-import {useQuasar} from 'quasar'
 import {computed} from 'vue'
+import useDarkTheme from 'src/core/composables/common/useDarkTheme';
 
 defineProps({
   size: {
@@ -21,15 +21,13 @@ defineProps({
   }
 });
 
-const $q = useQuasar();
-
-function setTheme() {
- $q.dark.toggle();
- localStorage.setItem('theme', $q.dark.isActive ? 'dark' : 'light');
-}
+const {
+  isDarkActive,
+  toggleTheme
+} = useDarkTheme()
 
 const icon = computed(() => {
- return $q.dark.mode ? 'wb_sunny' : 'nights_stay'
+ return isDarkActive.value ? 'wb_sunny' : 'nights_stay'
 })
 
 </script>

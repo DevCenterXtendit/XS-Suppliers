@@ -12,10 +12,11 @@
               :rules="societyGlRules.code"
               dense
               label="ID"
+              maxlength="4"
               outlined
             >
               <template v-slot:prepend>
-                <q-icon name="person" />
+                <q-icon name="badge" />
               </template>
             </q-input>
           </div>
@@ -28,7 +29,7 @@
               outlined
             >
               <template v-slot:prepend>
-                <q-icon name="person" />
+                <q-icon name="edit_note" />
               </template>
             </q-input>
           </div>

@@ -71,7 +71,7 @@
 
     <q-card
       flat
-       class="col column no-wrap q-px-sm"
+      class="col column no-wrap q-px-sm"
     >
       <q-table
         :columns="columns"
@@ -151,7 +151,7 @@ const initialPagination = {
   rowsPerPage: 10,
 };
 
-let filter = ref('');
+const filter = ref('');
 
 const columns = [
   { name: 'code', label: 'ID', align: 'left', field: 'code' },

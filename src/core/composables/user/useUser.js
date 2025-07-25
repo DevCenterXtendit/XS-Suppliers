@@ -35,9 +35,10 @@ const useUser = () => {
     users.value = await userService.getAll(idToUse);
   }
 
-  const getCompanies = async () => {
-    companies.value = [];
-    switch (companyType.value.id) {
+  //TODO: definir si el usuario cliente podría crear usuarios proveedores
+  const getCompanies = async (typeCompanyId = null) => {
+    const idToUse = companyType?.value?.id ?? typeCompanyId;
+    switch (idToUse) {
       case 2:
         companies.value = await customerService.getAll();
         break;
@@ -50,7 +51,8 @@ const useUser = () => {
   }
 
   const getRoles = async () => {
-    roles.value = await roleService.getAllByRoleType(companyType.value.id);
+    const idToUse = companyType?.value?.id ?? null;
+    roles.value = await roleService.getAllByRoleType(idToUse);
   }
 
   const getUser = async (userId) => {

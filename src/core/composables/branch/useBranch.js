@@ -4,9 +4,9 @@ import { societyGlService } from "src/core/services/societyGlService";
 import { societyFiService } from "src/core/services/societyFiService";
 import { branchService } from "src/core/services/branchService";
 
-const currentCustomerId = ref(null);
-const currentSocietyGlId = ref(null);
-const currentSocietyFiId = ref(null);
+const currentCustomer = ref(null);
+const currentSocietyGl = ref(null);
+const currentSocietyFi = ref(null);
 const branches = ref([]);
 const branch = reactive({});
 const openForm = ref(false);
@@ -29,22 +29,17 @@ const useBranch = () => {
     customers.value = await customerService.getAll();
   }
 
-  const onSelectedCustomer = async () => {
-    societiesGl.value = await societyGlService.getAllByCustomer(currentCustomerId.value);
-    currentSocietyGlId.value = null;
+  const getSocietiesGl = async () => {
+    const idToUse = currentCustomer?.value?.id ?? null;
+    societiesGl.value = await societyGlService.getAll(idToUse);
   }
 
-  const onSelectedSocietyGl = async () => {
-    societiesFi.value = await societyFiService.getAllBySocietyGl(currentSocietyGlId.value);
-    currentSocietyFiId.value = null;
+  const getSocietiesFi = async () => {
+    societiesFi.value = await societyFiService.getAllBySocietyGl(currentSocietyGl.value.id);
   }
 
-  const onSelectedSocietyFi = async () => {
-    await getBranchesBySocietyFi()
-  }
-
-  const getBranchesBySocietyFi = async () => {
-      branches.value = await branchService.getAllBySocietyFi(currentSocietyFiId.value);
+  const getBranches = async () => {
+    branches.value = await branchService.getAllBySocietyFi(currentSocietyFi.value.id);
   }
 
   const getBranch = async (branchId) => {
@@ -56,7 +51,8 @@ const useBranch = () => {
 
   const addBranch = () => {
     Object.assign(branch, initBranch());
-    branch.societyFiId = currentSocietyFiId.value;
+    branch.societyFiId = currentSocietyFi.value.id;
+    branch.customerId = currentCustomer?.value?.id ?? null;
     openForm.value = true;
   }
 
@@ -67,7 +63,7 @@ const useBranch = () => {
       await branchService.update(branch);
     }
     openForm.value = false;
-    await getBranchesBySocietyFi();
+    await getBranches();
   }
 
   const removeBranch = async (branchId) => {
@@ -80,19 +76,19 @@ const useBranch = () => {
 
   return {
     customers,
-    currentCustomerId,
+    currentCustomer,
     societiesGl,
-    currentSocietyGlId,
+    currentSocietyGl,
     societiesFi,
-    currentSocietyFiId,
+    currentSocietyFi,
     branches,
     branch,
     openForm,
 
     getCustomers,
-    onSelectedCustomer,
-    onSelectedSocietyGl,
-    onSelectedSocietyFi,
+    getSocietiesGl,
+    getSocietiesFi,
+    getBranches,
     getBranch,
     addBranch,
     handleSave,

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useAuthStore } from 'src/stores/auth-store'
 import { handleErrorResponse } from 'src/core/interceptors/handleErrorResponse'
 import { handleSuccessResponse } from 'src/core/interceptors/handleSuccessResponse'
+import { Loading, QSpinnerGears } from 'quasar'
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -11,7 +12,6 @@ import { handleSuccessResponse } from 'src/core/interceptors/handleSuccessRespon
 // "export default () => {}" function below (which runs individually
 // for each client)
 const baseURL = import.meta.env.VITE_XS_SUPPLIERS_API;
-console.log(baseURL);
 
 const api = axios.create({
   baseURL: baseURL
@@ -40,7 +40,10 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${authStore.token}`;
     }
 
-    // loader.show()
+    Loading.show({
+      spinner: QSpinnerGears,
+      // other props
+    })
     return config;
   },
   (error) => {

@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-md column no-wrap">
     <AppBreadcrumbs />
     <div class="text-h6">Segmentos</div>
     <q-card
@@ -7,9 +7,10 @@
       class="q-pa-md q-mt-sm"
     >
       <div class="row q-col-gutter-sm">
-         <div class="col-12 col-sm-4 col-md-3">
+         <div v-if="userLogged.companyType == COMPANY_TYPE.XTENDIT"
+          class="col-12 col-sm-4 col-md-3">
           <q-select
-            v-model="currentCustomerId"
+            v-model="currentCustomer"
             @update:model-value="onSelectedCustomer"
             :options="customers"
             dense
@@ -18,15 +19,14 @@
             map-options
             outlined
             option-label="name"
-            option-value="id"
           >
           </q-select>
         </div>
         <div class="col-12 col-sm-4 col-md-3">
           <q-select
-            v-model="currentSocietyGlId"
+            v-model="currentSocietyGl"
             @update:model-value="onSelectedSocietyGl"
-            :disable="!currentCustomerId"
+            :disable="!currentCustomer && userLogged.companyType == COMPANY_TYPE.XTENDIT"
             :options="societiesGl"
             dense
             emit-value
@@ -34,15 +34,14 @@
             map-options
             outlined
             option-label="name"
-            option-value="id"
           >
           </q-select>
         </div>
         <div class="col-12 col-sm-4 col-md-3">
           <q-select
-            v-model="currentSocietyFiId"
+            v-model="currentSocietyFi"
             @update:model-value="onSelectedSocietyFi"
-            :disable="!currentSocietyGlId"
+            :disable="!currentSocietyGl"
             :options="societiesFi"
             dense
             emit-value
@@ -50,19 +49,18 @@
             map-options
             outlined
             option-label="name"
-            option-value="id"
           >
           </q-select>
         </div>
       </div>
     </q-card>
     <q-card flat
-      class="row q-pa-md q-my-sm"
+      class="row q-pa-md q-my-md"
     >
       <div class="col-4 col-sm-6">
         <q-btn
           @click="addBranch"
-          :disable="!currentSocietyFiId"
+          :disable="!currentSocietyFi"
           color="primary"
           icon="add_circle_outline"
           label="Añadir"
@@ -86,15 +84,18 @@
     </q-card>
     <q-card
       flat
-      class="q-mt-md">
-      <q-card-section class="">
-        <q-table
-          flat
-          :filter="filter"
-          :rows="branches"
-          :columns="columns"
-          row-key="id"
-        >
+       class="col column no-wrap q-px-sm"
+    >
+      <q-table
+        :columns="columns"
+        :filter="filter"
+        :pagination="initialPagination"
+        :rows="branches"
+        color="secondary"
+        flat
+        row-key="id"
+        class="col"
+      >
         <template v-slot:body-cell-status="props">
           <q-td :props="props">
             <q-toggle
@@ -122,37 +123,46 @@
             />
           </q-td>
         </template>
-        </q-table>
-      </q-card-section>
+      </q-table>
     </q-card>
   </q-page>
   <branchForm/>
 </template>
 
 <script setup>
-import { ref, onMounted} from 'vue';
+import { ref, onMounted, onUnmounted} from 'vue';
 import useBranch from 'src/core/composables/branch/useBranch';
+import useAuth from 'src/core/composables/auth/useAuth';
 
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 import branchForm from 'src/components/branch/branchForm.vue';
+import { COMPANY_TYPE } from 'src/core/constants/company-type';
 
 const{
   customers,
-  currentCustomerId,
+  currentCustomer,
   societiesGl,
-  currentSocietyGlId,
+  currentSocietyGl,
   societiesFi,
-  currentSocietyFiId,
+  currentSocietyFi,
   branches,
   getCustomers,
-  onSelectedCustomer,
-  onSelectedSocietyGl,
-  onSelectedSocietyFi,
+  getSocietiesGl,
+  getSocietiesFi,
+  getBranches,
   getBranch,
   addBranch,
 } = useBranch();
 
-let filter = ref('');
+const {
+  userLogged
+} = useAuth();
+
+const initialPagination = {
+  rowsPerPage: 10,
+};
+
+const filter = ref('');
 
 const columns = [
   { name: 'code', label: 'ID', align: 'left', field: 'code' },
@@ -161,8 +171,39 @@ const columns = [
   { name: 'actions', label: 'ACCIONES', align: 'center' , field: 'actions'},
 ]
 
-onMounted(async() => {
-  await getCustomers();
+const onSelectedCustomer = async () => {
+  currentSocietyGl.value = null;
+  currentSocietyFi.value = null;
+  branches.value = [];
+  getSocietiesGl();
+}
+
+const onSelectedSocietyGl = async () => {
+  currentSocietyFi.value = null;
+  branches.value = [];
+  getSocietiesFi();
+}
+
+const onSelectedSocietyFi = async () => {
+  getBranches();
+}
+
+onMounted(async () => {
+  if(userLogged.companyType == COMPANY_TYPE.XTENDIT){
+    await getCustomers();
+  }else{
+    await getSocietiesGl();
+  }
+})
+
+onUnmounted(() => {
+  customers.value = [];
+  currentCustomer.value = null;
+  societiesGl.value = [];
+  currentSocietyGl.value = null;
+  societiesFi.value = [];
+  currentSocietyFi.value = null;
+  branches.value = [];
 })
 </script>
 

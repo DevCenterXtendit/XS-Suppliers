@@ -1,4 +1,5 @@
 import { Notify } from 'quasar';
+import { Loading } from 'quasar';
 
 export const handleErrorResponse = (error) => {
 
@@ -35,6 +36,7 @@ export const handleErrorResponse = (error) => {
     icon: icon
   });
 
+  Loading.hide();
 
   return Promise.reject(error);
 }

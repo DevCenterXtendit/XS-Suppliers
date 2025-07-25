@@ -8,5 +8,6 @@ export default {
   email: 'Formato email invalido: MiCorreo@email.com',
   passwordRepeat: 'Las contraseñas deben coincidir',
   phone: 'Debe ingresar un número telefonico válido',
-  companyRFC: 'Formato RFC incorrecto: AAA010101ABC'
+  companyRFC: 'Formato RFC incorrecto: AAA010101ABC',
+  noSpecialCharacters: 'No se permiten caracteres especiales'
 }

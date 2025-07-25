@@ -1,9 +1,9 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-md column no-wrap">
     <AppBreadcrumbs />
     <div class="text-h6">Clientes</div>
     <q-card flat
-      class="row q-pa-md q-my-sm"
+      class="row q-pa-md q-mt-sm"
     >
       <div class="col-4 col-sm-6">
         <q-btn
@@ -32,17 +32,20 @@
 
     <q-card
       flat
-      class="q-mt-md">
-      <q-card-section class="">
-        <q-table
-          flat
-          :filter="filter"
-          :rows="customers"
-          :columns="columns"
-          row-key="id"
-        >
+      class="col column no-wrap q-mt-md"
+    >
+      <q-table
+        :columns="columns"
+        :filter="filter"
+        :pagination="initialPagination"
+        :rows="customers"
+        color="secondary"
+        flat
+        row-key="id"
+        class="col"
+      >
         <template v-slot:body-cell-status="props">
-         <q-td :props="props">
+          <q-td :props="props">
             <q-toggle
               v-model="props.row.isActive"
               size="sm"
@@ -67,8 +70,7 @@
             />
           </q-td>
         </template>
-        </q-table>
-      </q-card-section>
+      </q-table>
     </q-card>
     <customer-form
       v-model:open="openCustomerForm"
@@ -79,7 +81,7 @@
 </template>
 
 <script setup>
-import {ref, onMounted } from 'vue';
+import {ref, onMounted, onUnmounted } from 'vue';
 
 //components
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
@@ -97,7 +99,7 @@ const { customer,
         openCustomerForm
       } = useCustomer();
 
-let filter = ref('');
+const filter = ref('');
 
 const columns = [
   { name: 'code', label: 'ID', align: 'left', field: 'code' },
@@ -106,13 +108,15 @@ const columns = [
   { name: 'actions', label: 'ACCIONES', align: 'center' , field: 'actions'},
 ]
 
+const initialPagination = {
+  rowsPerPage: 10,
+};
+
 onMounted(async() => {
    await getCustomers();
 })
 
-
-</script>
-
-
-<script setup>
+onUnmounted(() => {
+  customers.value = [];
+})
 </script>

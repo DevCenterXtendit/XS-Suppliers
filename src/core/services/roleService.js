@@ -3,8 +3,8 @@ import { api } from 'boot/axios';
 const baseEndpoint = "/roles"
 
 const getAllByRoleType = async (roleTypeId) => {
-  const response = await api.get(`${baseEndpoint}?roleTypeId=${roleTypeId}`);
-  return response;
+  const params = roleTypeId ? `?roleTypeId=${roleTypeId}` : '';
+  return await api.get(`${baseEndpoint}${params}`);
 };
 
 const getById = async (id) => {

@@ -141,26 +141,30 @@ const columns = [
 ]
 
 const onSelectedCompanyType = () => {
-  initPage();
+  getUsers();
+  getRoles();
 }
 
-const initPage = async () => {
-  await getUsers();
-  await getCompanies();
-  await getRoles();
-}
+// const initPage = async () => {
+//   await getUsers();
+//   await getCompanies(userLogged.companyId);
+//   await getRoles();
+// }
 
 onMounted(async () => {
   if (userLogged.companyType !== COMPANY_TYPE.XTENDIT){
-    await initPage();
+    await getUsers();
+  }else{
+    await getRoles();
+    await getCompanies();
   }
 });
 
 onUnmounted(() => {
   companyType.value = null;
-  users.value = [];
   companies.value = [];
   roles.value = [];
+  users.value = [];
 });
 
 </script>

@@ -4,16 +4,14 @@
 
 <script setup>
 import { onMounted } from 'vue'
-import { useQuasar } from 'quasar'
+import useDarkTheme from './core/composables/common/useDarkTheme';
 
-const $q = useQuasar()
+const {
+  loadUserTheme
+} = useDarkTheme()
 
 onMounted(() => {
-  const savedTheme = localStorage.getItem('theme')
-  if (savedTheme === 'dark') {
-    $q.dark.set(true)
-  } else if (savedTheme === 'light') {
-    $q.dark.set(false)
-  }
-})
+  loadUserTheme();
+});
+
 </script>

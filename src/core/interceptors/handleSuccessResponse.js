@@ -1,4 +1,5 @@
 import { Notify } from 'quasar';
+import { Loading } from 'quasar';
 
 export const handleSuccessResponse = (response) => {
   // let resp = {
@@ -14,6 +15,8 @@ export const handleSuccessResponse = (response) => {
       });
     }
   }
+
+  Loading.hide();
 
   // Retorna la respuesta completa si no hay datos específicos
   return response.data.data;
