@@ -2,41 +2,32 @@ import { api } from 'boot/axios';
 
 const baseEndpoint = "/users"
 
-const getAll = async (companyTypeId) => {
-  let response = null;
-
+const getAll = (companyTypeId) => {
   if(!companyTypeId){
-    response = await api.get(baseEndpoint);
+    return api.get(baseEndpoint);
   }else{
-    response = await api.get(`${baseEndpoint}?companyTypeId=${companyTypeId}`);
+    return api.get(`${baseEndpoint}?companyTypeId=${companyTypeId}`);
   }
-
-  return response;
 };
 
-const getById = async (userId) => {
-  const response = await api.get(`${baseEndpoint}/${userId}`);
-  return response;
+const getById = (userId) => {
+  return api.get(`${baseEndpoint}/${userId}`);
 };
 
-const add = async (user) => {
-  const response = await api.post(baseEndpoint, user);
-  return response;
+const add = (user) => {
+  return api.post(baseEndpoint, user);
 }
 
-const update = async (user) => {
-  const response = await api.put(`${baseEndpoint}/${user.id}`, user);
-  return response;
+const update = (user) => {
+  return api.put(`${baseEndpoint}/${user.id}`, user);
 }
 
 const setStatus = async (userId, status) => {
-  const response = await api.put(`${baseEndpoint}/${userId}/active`, status);
-  return response;
+  return api.put(`${baseEndpoint}/${userId}/active`, status);
 }
 
 const remove = async (userId) => {
-  const response = await api.delete(`${baseEndpoint}/${userId}`);
-  return response;
+  return api.delete(`${baseEndpoint}/${userId}`);
 }
 
 export const userService = {

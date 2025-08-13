@@ -140,23 +140,22 @@ const columns = [
   { name: 'actions', label: 'ACCIONES', align: 'center' , field: 'actions'},
 ]
 
-const onSelectedCompanyType = () => {
-  getUsers();
-  getRoles();
+const onSelectedCompanyType = async () => {
+  await Promise.all([
+    getUsers(),
+    getRoles(),
+    // TODO: hay que revisar si es necesario cargar esto aquí ya que solo se necesita al
+    // agregar un usuario
+    getCompanies()
+  ]);;
 }
-
-// const initPage = async () => {
-//   await getUsers();
-//   await getCompanies(userLogged.companyId);
-//   await getRoles();
-// }
 
 onMounted(async () => {
   if (userLogged.companyType !== COMPANY_TYPE.XTENDIT){
-    await getUsers();
-  }else{
-    await getRoles();
-    await getCompanies();
+    await Promise.all([
+      getUsers(),
+      getRoles()
+    ])
   }
 });
 

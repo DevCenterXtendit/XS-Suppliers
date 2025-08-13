@@ -1,23 +1,18 @@
-import { Notify } from 'quasar';
-import { Loading } from 'quasar';
+import { bus } from "src/core/common/global-event-bus";
 
 export const handleSuccessResponse = (response) => {
-  // let resp = {
-  //   message:'',
-  //   data: null,
-  // }
-
-  if (response.data) {
-    if(response.data.message){
-      Notify.create({
-        message: response.data.message,
-        type: 'positive',
-      });
-    }
+  const notification = {
+    message: '',
+    icon: 'done',
+    color: 'positive'
   }
 
-  Loading.hide();
+  const message = response?.data?.message;
+  if (message) {
+    notification.message = message;
+    bus.emit('notify', notification);
+  }
 
   // Retorna la respuesta completa si no hay datos específicos
-  return response.data.data;
+  return response?.data?.data ?? response.data ?? response;
 };

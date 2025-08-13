@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useAuthStore } from 'src/stores/auth-store'
 import { handleErrorResponse } from 'src/core/interceptors/handleErrorResponse'
 import { handleSuccessResponse } from 'src/core/interceptors/handleSuccessResponse'
-import { Loading, QSpinnerGears } from 'quasar'
+import { showLoading, hideLoading } from 'src/core/utils/loading-tracker';
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -40,13 +40,11 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${authStore.token}`;
     }
 
-    Loading.show({
-      spinner: QSpinnerGears,
-      // other props
-    })
+    showLoading();
     return config;
   },
   (error) => {
+    hideLoading();
     console.log('ERROR AL CREAR LA PETICIÓN: ', error);
     return Promise.reject(error);
   }
@@ -55,9 +53,11 @@ api.interceptors.request.use(
 // Interceptor for response
 api.interceptors.response.use(
   (resp) => {
+    hideLoading();
     return handleSuccessResponse(resp);
   },
   (error) => {
+    hideLoading();
     return handleErrorResponse(error);
   }
 );

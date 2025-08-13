@@ -1,43 +1,43 @@
-import { Notify } from 'quasar';
-import { Loading } from 'quasar';
+import { bus } from 'src/core/common/global-event-bus';
 
 export const handleErrorResponse = (error) => {
-
-  let message = 'Error desconocido';
-  let icon = 'user'
-  let color = 'negative'
+  // Valores por defecto de notificación
+  const notification = {
+    message: 'Error desconocido',
+    icon: 'warning',
+    color: 'negative'
+  };
 
   if (error.response) {
-    message = `${error.response.data.detail}`
+    notification.message = error.response.data?.detail || 'Error en la respuesta del servidor';
 
     switch (error.response.status) {
       case 400:
-        icon = ''
-        color = 'warning'
+        notification.icon = 'error_outline';
+        notification.color = 'warning';
+        break;
+      case 401:
+        notification.icon = 'person';
+        if (error.response.data?.title !== 'Authentication error') {
+          bus.emit('logout');
+        }
         break;
       case 500:
-        icon = 'warning'
+        notification.icon = 'warning';
+        notification.color = 'negative';
         break;
       default:
-          console.log('shopapi muñaño');
         break;
     }
   } else if (error.request) {
-    message = 'El servicio esta fuera de linea'
-    icon = 'error'
-    color = 'negative'
+    notification.message = 'El servicio está fuera de línea';
+    notification.icon = 'error';
+    notification.color = 'negative';
   } else {
-    message = `Error: ${error.message}`
+    notification.message = `Error: ${error.message}`;
   }
 
-  Notify.create({
-    color: color,
-    message: message,
-    icon: icon
-  });
-
-  Loading.hide();
+  bus.emit('notify', notification);
 
   return Promise.reject(error);
-}
-
+};
