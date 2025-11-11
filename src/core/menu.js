@@ -41,6 +41,18 @@ export default [
             label: 'Segmentos',
             to: '/configuration/company-structure/branches'
           },
+          // {
+          //   name: 'companyRoadmap',
+          //   icon: 'business',
+          //   label: 'Organigrama',
+          //   to: '/configuration/company-structure/company-roadmap'
+          // },
+          {
+            name: 'suppliers',
+            icon: 'business',
+            label: 'Proveedores',
+            to: '/configuration/company-structure/suppliers'
+          }
         ]
       },
       {

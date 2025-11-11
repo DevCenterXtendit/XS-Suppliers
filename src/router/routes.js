@@ -51,6 +51,16 @@ const routes = [
                 path: 'branches',
                 name: 'branches',
                 component: () => import ('src/pages/private/BranchPage.vue'),
+              },
+              // {
+              //   path: 'company-roadmap',
+              //   name: 'companyRoadmap',
+              //   component: () => import ('src/pages/private/CompanyRoadmap.vue'),
+              // }
+              {
+                path: 'suppliers',
+                name: 'suppliers',
+                component: () => import ('src/pages/private/SuppliersPage.vue'),
               }
             ]
           },
