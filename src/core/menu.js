@@ -80,5 +80,25 @@ export default [
         to: '/configuration/supplier-fields-configuration'
       },
     ],
-  }
+  },
+  {
+    name: 'suppliers',
+    icon: 'home',
+    label: 'Proveedores',
+    to: '/',
+     children: [
+      {
+        name: 'suppliers',
+        icon: 'home',
+        label: 'Estatus facturas',
+        to: '/',
+      },
+      {
+        name: 'suppliers',
+        icon: 'home',
+        label: 'Cargar Factura',
+        to: '/',
+      }
+     ]
+  },
 ]

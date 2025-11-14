@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-md colum no-wrap">
     <AppBreadcrumbs />
     <div class="text-h6">Campos proveedor</div>
     <q-tabs
@@ -51,13 +51,16 @@
             <q-table
               :columns="columns"
               :filter="filter"
+              :pagination="initialPagination"
               :rows="supplierFields"
+              color="secondary"
               flat
               row-key="id"
+              class="col"
             >
               <template v-slot:body-cell-fieldType="props">
                <q-td :props="props">
-                 {{getFieldTypeById(props.row.id)}}
+                 {{getFieldTypeById(props.row.fieldTypeId)}}
                </q-td>
               </template>
               <template v-slot:body-cell-actions="props">
@@ -68,13 +71,6 @@
                     color="grey-7"
                     flat
                     icon="edit"
-                  />
-                  <q-btn
-                    dense
-                    color="grey-7"
-                    class="q-ml-sm"
-                    flat
-                    icon="delete"
                   />
                 </q-td>
               </template>
@@ -121,23 +117,8 @@
               :rows="supplierFieldTypes"
               flat
               row-key="id"
+              class="column"
             >
-              <template v-slot:body-cell-isVisible="props">
-                <q-td :props="props">
-                  <q-toggle
-                    v-model="props.row.isVisible"
-                    size="sm"
-                  />
-                </q-td>
-              </template>
-              <template v-slot:body-cell-isRequired="props">
-                <q-td :props="props">
-                  <q-toggle
-                    v-model="props.row.isRequired"
-                    size="sm"
-                  />
-                </q-td>
-              </template>
               <template v-slot:body-cell-actions="props">
                 <q-td :props="props">
                   <q-btn
@@ -146,13 +127,6 @@
                     color="grey-7"
                     flat
                     icon="edit"
-                  />
-                  <q-btn
-                    dense
-                    color="grey-7"
-                    class="q-ml-sm"
-                    flat
-                    icon="delete"
                   />
                 </q-td>
               </template>
@@ -192,11 +166,15 @@ const {
   getSupplierFieldType
 } = useSupplierFieldType();
 
+const initialPagination = {
+  rowsPerPage: 50,
+};
+
 const tab = ref('supplierFields')
 
 const columns = [
   { name: 'text', label: 'CAMPO', align: 'left', field: 'text' },
-  { name: 'fieldType', label: 'CLASIFICACION', align: 'left', field: 'fieldTypeId'},
+  { name: 'fieldType', label: 'CLASIFICACION', align: 'left', field: 'fieldType'},
   { name: 'actions', label: 'ACCIONES', align: 'center' , field: 'actions'},
 ]
 
@@ -211,12 +189,14 @@ let filetrType = ref('');
 const getFieldTypeById = computed(() => {
   return (id) => {
     const field = supplierFieldTypes.value.find(f => f.id === id)
+    console.log(field);
     return field ? field.text : ''
   }
 })
 
 onMounted(async() => {
-  await getSupplierFields();
   await getSupplierFieldTypes();
+  console.log(supplierFieldTypes.value)
+  await getSupplierFields();
 })
 </script>

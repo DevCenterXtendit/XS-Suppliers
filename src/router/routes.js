@@ -82,12 +82,12 @@ const routes = [
           {
             path: 'supplier-fields-configuration',
             name: 'supplierFieldsConfiguration',
-            component: () => import ('src/pages/private/SupplierFieldConfiguration.vue'),
+            component: () => import ('src/pages/private/SupplierFieldConfigurationPage.vue'),
           },
           {
             path: 'supplier-fields',
             name: 'supplierFields',
-            component: () => import ('src/pages/private/SupplierFields.vue'),
+            component: () => import ('src/pages/private/SupplierFieldsPage.vue'),
           }
         ]
       },
