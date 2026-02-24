@@ -58,7 +58,6 @@ const useUser = () => {
   const getUser = async (userId) => {
     Object.assign(user, initUser());
     const userResponse = await userService.getById(userId);
-    debugger;
     Object.assign(user, userResponse);
     openUserForm.value = true;
   }

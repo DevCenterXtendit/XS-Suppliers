@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md colum no-wrap">
+  <q-page class="q-pa-md column no-wrap">
     <AppBreadcrumbs />
     <div class="text-h6">Campos proveedor</div>
     <q-tabs

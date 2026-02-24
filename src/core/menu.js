@@ -5,11 +5,11 @@ export default [
     label: 'Inicio',
     to: '/'
   },
+  //Configuración Empresarial
   {
     name: 'configuration',
     icon: 'settings',
     label: 'Configuración Empresarial',
-    to: '/configuration',
     children: [
       {
         name: 'companyStructure',
@@ -40,65 +40,75 @@ export default [
             icon: 'business',
             label: 'Segmentos',
             to: '/configuration/company-structure/branches'
-          },
-          // {
-          //   name: 'companyRoadmap',
-          //   icon: 'business',
-          //   label: 'Organigrama',
-          //   to: '/configuration/company-structure/company-roadmap'
-          // },
-          {
-            name: 'suppliers',
-            icon: 'business',
-            label: 'Proveedores',
-            to: '/configuration/company-structure/suppliers'
           }
         ]
-      },
+      }
+    ],
+  },
+  // Seguridad
+  {
+    name: 'security',
+    icon: 'security', 
+    label: 'Seguridad',
+    children: [
       {
         name: 'users',
         icon: 'person',
         label: 'Usuarios',
-        to: '/configuration/users'
+        to: '/security/users'
       },
       {
         name: 'roles',
         icon: 'groups',
         label: 'Roles',
-        to: '/configuration/roles'
+        to: '/security/roles'
+      },
+    ]
+  },
+  // Configuración Proveedores
+  {
+    name: 'supplierConfiguration',
+    icon: 'diversity_3', 
+    label: 'Configuración Proveedores',
+    children: [
+      {
+        name: 'supplierFieldsConfiguration',
+        icon: 'grading',
+        label: 'Configuración de Campos',
+        to: '/supplier-configuration/supplier-fields-configuration'
       },
       {
         name: 'supplierFields',
         icon: 'format_list_bulleted',
-        label: 'Campos proveedor',
-        to: '/configuration/supplier-fields'
+        label: 'Campos Proveedor',
+        to: '/supplier-configuration/supplier-fields'
+      },
+    ]
+  },
+  // Gestión de Proveedores
+  {
+    name: 'supplierManagement',
+    icon: 'diversity_3',
+    label: 'Gestion de Proveedores',
+    children: [
+      {
+        name: 'suppliers',
+        icon: 'person_add',
+        label: 'Alta Proveedores',
+        to: '/supplier-management/suppliers'
       },
       {
-        name: 'supplierFieldsConfiguration',
-        icon: 'grading',
-        label: 'Configuración de campos',
-        to: '/configuration/supplier-fields-configuration'
-      },
-    ],
+        name: 'suppliers',
+        icon: 'description',
+        label: 'Actualizar Facturas',
+        to: '/supplier-management/invoice-update',
+      }
+    ]
   },
   {
-    name: 'suppliers',
-    icon: 'home',
-    label: 'Proveedores',
+    name: 'viewInvoices',
+    icon: 'invoice-text-plus-outline',
+    label: 'Visualizar Facturas',
     to: '/',
-     children: [
-      {
-        name: 'suppliers',
-        icon: 'home',
-        label: 'Estatus facturas',
-        to: '/',
-      },
-      {
-        name: 'suppliers',
-        icon: 'home',
-        label: 'Cargar Factura',
-        to: '/',
-      }
-     ]
-  },
-]
+  }
+];

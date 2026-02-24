@@ -14,5 +14,5 @@ export const handleSuccessResponse = (response) => {
   }
 
   // Retorna la respuesta completa si no hay datos específicos
-  return response?.data?.data ?? response.data ?? response;
+  return response.data.data;
 };

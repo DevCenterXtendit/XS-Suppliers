@@ -14,6 +14,7 @@ const useAddressValidation = () => {
     street: [
       createValidator(validators.required, message.required),
       createValidator(validators.maxLength(100), message.maxLength(100)),
+      createValidator(validators.alphanumericWithSpaces, message.noSpecialCharacters),
     ],
     exteriorNumber: [
       createValidator(validators.required, message.required),

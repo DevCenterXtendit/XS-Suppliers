@@ -30,10 +30,15 @@ const useDarkTheme = () => {
     storageService.setItem(KEYS.theme, newTheme, false);
   };
 
+  const resetTheme = () => {
+    $q.dark.set(false);
+  };
+
   return {
     isDarkActive,
     loadUserTheme,
     toggleTheme,
+    resetTheme,
   };
 };
 

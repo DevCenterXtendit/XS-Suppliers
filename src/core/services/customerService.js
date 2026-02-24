@@ -8,7 +8,7 @@ const getAll = async () => {
 };
 
 const getAllActive = async () => {
-  const response = await api.get(`${baseEndpoint}/active`);
+  const response = await api.get(`${baseEndpoint}/list`);
   return response;
 };
 

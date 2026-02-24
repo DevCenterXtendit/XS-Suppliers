@@ -4,7 +4,8 @@
     :maximized="isMobile"
     :transition-show="isMobile ? 'slide-up' : 'fade'"
     :transition-hide="isMobile ? 'slide-down' : 'fade'"
-    v-model="isOpen">
+    v-model="isOpen"
+    @hide="handleDialogHide">
     <q-card flat :style="isMobile ? null : { width: `${width}px`, maxWidth: '80vw' }">
       <q-card-section class="row items-center q-pa-sm">
         <q-space/>
@@ -43,7 +44,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['input']);
+const emit = defineEmits(['input', 'closed']);
 const $q = useQuasar()
 
 //variables
@@ -58,5 +59,9 @@ const isOpen = computed({
     emit('input', newValue )
   }
 });
+
+const handleDialogHide = () => {
+  emit('closed');
+}
 
 </script>

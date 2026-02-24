@@ -13,84 +13,100 @@ const routes = [
         component: () => import('src/pages/private/IndexPage.vue')
       },
       {
-        name: 'configurationLayout',
+        name: 'configuration',
         path: 'configuration',
-        component: () => import('layouts/ConfigurationLayout.vue'),
+        redirect: { name: 'companyStructure' },
         children: [
           {
-            path: '',
-            name: 'configurationPage',
-            component: () => import('pages/private/ConfigurationPage.vue')
-          },
-          {
-            path: 'company-structure',
             name: 'companyStructureLayout',
-            component: () => import ('layouts/CompanyStructureLayout.vue'),
+            path: 'company-structure',
+            component: () => import('layouts/RouterLayout.vue'),
             children: [
               {
+                name: 'companyStructure',
                 path: '',
-                name: 'companyStructurePage',
-                component: () => import('pages/private/CompanyStructurePage.vue')
+                component: () => import ('pages/private/CompanyStructurePage.vue')
               },
               {
-                path: 'customers',
                 name: 'customers',
+                path: 'customers',
                 component: () => import ('pages/private/CustomersPage.vue'),
               },
               {
-                path: 'societies-GL',
                 name: 'societiesGL',
+                path: 'societies-GL',
                 component: () => import ('pages/private/SocietyGlPage.vue'),
               },
               {
-                path: 'societies-FI',
                 name: 'societiesFI',
+                path: 'societies-FI',
                 component: () => import ('src/pages/private/SocietyFiPage.vue'),
               },
               {
-                path: 'branches',
                 name: 'branches',
+                path: 'branches',
                 component: () => import ('src/pages/private/BranchPage.vue'),
               },
-              // {
-              //   path: 'company-roadmap',
-              //   name: 'companyRoadmap',
-              //   component: () => import ('src/pages/private/CompanyRoadmap.vue'),
-              // }
-              {
-                path: 'suppliers',
-                name: 'suppliers',
-                component: () => import ('src/pages/private/SuppliersPage.vue'),
-              }
             ]
-          },
-          {
-            path: 'users',
-            name: 'users',
-            component:() => import ('src/pages/private/UsersPage.vue'),
-          },
-          {
-            path: 'roles',
-            name: 'roles',
-            component:() => import ('src/pages/private/RolesPage.vue'),
-          },
-          {
-            path: 'roles-permissions/:id',
-            name: 'rolePermissions',
-            component:() => import ('src/pages/private/RolePermissionsPage.vue'),
-          },
-          {
-            path: 'supplier-fields-configuration',
-            name: 'supplierFieldsConfiguration',
-            component: () => import ('src/pages/private/SupplierFieldConfigurationPage.vue'),
-          },
-          {
-            path: 'supplier-fields',
-            name: 'supplierFields',
-            component: () => import ('src/pages/private/SupplierFieldsPage.vue'),
           }
         ]
       },
+      {
+        name: 'security',
+        path: 'security',
+        redirect: { name: 'users' },
+        children: [
+          {
+            name: 'users',
+            path: 'users',
+            component:() => import ('src/pages/private/UsersPage.vue'),
+          },
+          {
+            name: 'roles',
+            path: 'roles',
+            component:() => import ('src/pages/private/RolesPage.vue'),
+          },
+          {
+            name: 'rolePermissions',
+            path: 'roles-permissions/:id',
+            component:() => import ('src/pages/private/RolePermissionsPage.vue'),
+          },
+        ],
+      },
+      {
+        name: 'supplierConfiguration',
+        path: 'supplier-configuration',
+        redirect: { name: 'supplierFieldsConfiguration' },
+        children: [
+          {
+            name: 'supplierFieldsConfiguration',
+            path: 'supplier-fields-configuration',
+            component: () => import ('src/pages/private/SupplierFieldConfigurationPage.vue'),
+          },
+          {
+            name: 'supplierFields',
+            path: 'supplier-fields',
+            component: () => import ('src/pages/private/SupplierFieldsPage.vue'),
+          },
+        ],
+      },
+      {
+        name: 'SupplierManagement',
+        path: 'supplier-management',
+        redirect: { name: 'suppliers' },
+        children: [
+          {
+            name: 'suppliers',
+            path: 'suppliers',
+            component: () => import ('src/pages/private/SuppliersPage.vue'),
+          },
+          {
+            name: 'invoiceUpdate',
+            path: 'invoice-update',
+            component: () => import ('src/pages/private/CustomerInvoicesPage.vue'),
+          },
+        ]
+      }
     ]
   },
   {

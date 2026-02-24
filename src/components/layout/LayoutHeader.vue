@@ -1,6 +1,6 @@
 <template>
   <q-header class="fixed-top">
-    <q-toolbar class="bg-topbar">
+    <q-toolbar class="bg-dark">
       <q-btn dense
         flat
         round
@@ -19,8 +19,8 @@
 
       <q-space></q-space>
       <q-chip
-        dense
         color="secondary"
+        dense
         icon="verified_user"
         text-color="white"
       >

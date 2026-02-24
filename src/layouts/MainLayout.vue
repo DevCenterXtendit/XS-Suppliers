@@ -18,10 +18,12 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import Sidebar from 'src/components/layout/SideBar.vue';
 import LayoutHeader from '../components/layout/LayoutHeader.vue'
-import useAuth from 'src/core/composables/auth/useAuth';
-import { bus } from 'src/core/common/global-event-bus';
+import useDarkTheme from 'src/core/composables/common/useDarkTheme';
+import useLogoutHandler from 'src/core/composables/common/useLogoutHandler';
 
-const { handleLogout } = useAuth()
+const { loadUserTheme, resetTheme } = useDarkTheme();
+
+useLogoutHandler();
 
 const sidebarComponent = ref(null);
 
@@ -29,15 +31,12 @@ function toggleDrawer() {
   sidebarComponent.value.toggleDrawer();
 }
 
-const onLogout = () => {
-  handleLogout();
-}
-
 onMounted(() => {
-  bus.on('logout', onLogout);
+  loadUserTheme();
 })
+
 onUnmounted(() => {
-  bus.off('logout', onLogout)
+  resetTheme();
 })
 
 </script>

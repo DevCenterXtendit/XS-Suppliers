@@ -28,14 +28,19 @@ const breadcrumbLabels = {
   '' : { label: 'Inicio', icon: 'home' },
   'configuration' : { label: 'Configuración empresarial', icon: 'settings'},
   'company-structure' : { label: 'Estructura de empresa', icon: 'apartment'},
-  'users' : { label: 'Usuarios', icon: 'person'},
-  'roles' : { label: 'Roles', icon: 'groups'},
   'customers' : { label: 'Clientes', icon: 'business'},
   'societies-GL' : { label: 'Sociedad GL', icon: 'business'},
   'societies-FI' : { label: 'Sociedad FI', icon: 'business'},
   'branches' : { label: 'Segmento', icon: 'business'},
+  'security' : { label: 'Seguridad', icon: 'security'},
+  'users' : { label: 'Usuarios', icon: 'person'},
+  'roles' : { label: 'Roles', icon: 'groups'},
+  'supplier-configuration' : { label: 'Configuración Proveedores', icon: 'diversity_3'},
   'supplier-fields' : { label: 'Campos proveedor', icon: 'format_list_bulleted'},
   'supplier-fields-configuration' : { label: 'Configuración de campos', icon: 'grading'},
+  'supplier-management' : { label: 'Gestión de Proveedores', icon: 'diversity_3'},
+  'suppliers' : { label: 'Alta Proveedores', icon: 'person_add'},
+  'invoice-update' : { label: 'Actualizar Facturas', icon: 'description'},
 }
 
 const route = useRoute();
