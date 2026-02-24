@@ -97,10 +97,10 @@
         </q-input>
       </div>
     </q-card>
-
+    <!-- un cambio de prueba -->
     <!-- Tabla de facturas -->
-    <q-card 
-      flat 
+    <q-card
+      flat
       class="col column no-wrap q-px-sm"
     >
       <q-table
@@ -180,7 +180,7 @@ const stats = computed(() => {
   const pagadasInvoices = invoices.value.filter(inv => inv.estatus === 'Pagada');
   const porPagarInvoices = invoices.value.filter(inv => inv.estatus === 'Por pagar');
   const canceladasInvoices = invoices.value.filter(inv => inv.estatus === 'Cancelada');
-  
+
   return {
     total: invoices.value.length,
     totalMonto: invoices.value.reduce((sum, inv) => sum + inv.monto, 0),
