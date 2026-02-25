@@ -97,7 +97,6 @@
         </q-input>
       </div>
     </q-card>
-    <!-- un cambio de prueba -->
     <!-- Tabla de facturas -->
     <q-card
       flat
@@ -142,7 +141,10 @@ import useCustomerInvoices from 'src/core/composables/customerInvoces/useCustome
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 import UploadTemplate from 'src/components/CustomerInvoices/UploadTemplate.vue';
 
-const { openTemplateDialog } = useCustomerInvoices();
+const {
+  invoices,
+  openTemplateDialog
+} = useCustomerInvoices();
 
 const initialPagination = {
   rowsPerPage: 10,
@@ -160,20 +162,6 @@ const columns = [
 ];
 
 const statusOptions = ['Pagada', 'Por pagar', 'Cancelada'];
-
-// Dummy data
-const invoices = ref([
-  { id: 1, folio: 'FAC-2026-001', proveedor: 'Proveedor ABC SA de CV', fecha: '2026-01-15', monto: 15000.00, estatus: 'Pagada' },
-  { id: 2, folio: 'FAC-2026-002', proveedor: 'Comercializadora XYZ', fecha: '2026-01-18', monto: 8500.50, estatus: 'Por pagar' },
-  { id: 3, folio: 'FAC-2026-003', proveedor: 'Distribuidora DEF', fecha: '2026-01-20', monto: 12300.75, estatus: 'Pagada' },
-  { id: 4, folio: 'FAC-2026-004', proveedor: 'Servicios GHI', fecha: '2026-01-22', monto: 6750.00, estatus: 'Cancelada' },
-  { id: 5, folio: 'FAC-2026-005', proveedor: 'Proveedor JKL', fecha: '2026-01-25', monto: 22000.00, estatus: 'Por pagar' },
-  { id: 6, folio: 'FAC-2026-006', proveedor: 'Suministros MNO', fecha: '2026-01-28', monto: 4500.25, estatus: 'Pagada' },
-  { id: 7, folio: 'FAC-2026-007', proveedor: 'Comercial PQR', fecha: '2026-01-30', monto: 18900.00, estatus: 'Por pagar' },
-  { id: 8, folio: 'FAC-2026-008', proveedor: 'Distribuidora STU', fecha: '2026-02-01', monto: 9200.50, estatus: 'Pagada' },
-  { id: 9, folio: 'FAC-2026-009', proveedor: 'Servicios VWX', fecha: '2026-02-03', monto: 3400.00, estatus: 'Cancelada' },
-  { id: 10, folio: 'FAC-2026-010', proveedor: 'Proveedor YZ', fecha: '2026-02-04', monto: 11500.75, estatus: 'Por pagar' },
-]);
 
 // Computed para estadísticas
 const stats = computed(() => {
