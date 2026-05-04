@@ -2,9 +2,14 @@ import { api } from 'boot/axios';
 
 const baseEndpoint = "/roles"
 
-const getAllByRoleType = async (roleTypeId) => {
+const getAll = async (roleTypeId) => {
   const params = roleTypeId ? `?roleTypeId=${roleTypeId}` : '';
   return await api.get(`${baseEndpoint}${params}`);
+};
+
+const getList = async (roleTypeId) => {
+  const params = roleTypeId ? `?roleTypeId=${roleTypeId}` : '';
+  return await api.get(`${baseEndpoint}/list${params}`);
 };
 
 const getById = async (id) => {
@@ -43,7 +48,8 @@ const remove = async (id) => {
 }
 
 export const roleService = {
-  getAllByRoleType,
+  getAll,
+  getList,
   getById,
   add,
   update,

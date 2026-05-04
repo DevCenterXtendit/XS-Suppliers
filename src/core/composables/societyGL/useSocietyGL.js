@@ -22,7 +22,7 @@ const  useSocietyGL = () =>  {
   }
 
   const getCustomers = async () => {
-    customers.value = await customerService.getAll();
+    customers.value = await customerService.getList();
   }
 
   const getSocietiesGl = async () => {

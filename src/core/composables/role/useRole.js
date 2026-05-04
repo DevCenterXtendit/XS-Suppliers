@@ -26,7 +26,7 @@ const useRole = () => {
   }
 
   const getRoles = async () => {
-    roles.value = await roleService.getAllByRoleType(roleType.value.id);
+    roles.value = await roleService.getAll(roleType.value.id);
   }
 
   const getRole = async (roleId) => {

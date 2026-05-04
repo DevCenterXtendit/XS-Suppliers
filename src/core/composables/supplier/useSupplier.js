@@ -21,7 +21,7 @@ function initSupplier () {
     rfc: '',
     email: '',
     supplierTypeId: 1,
-    customerId: 0,
+    customerId: null,
     address: {
       street: '',
       exteriorNumber: '',
@@ -41,19 +41,19 @@ const useSupplier = () => {
   }
 
   const getSuppliers = async () => {
-    const idToUse = currentCustomer?.value.id ?? null;
-    suppliers.value = await supplierService.getAll(idToUse); 
+    const idToUse = currentCustomer.value?.id ?? null;
+    suppliers.value = await supplierService.getAll(idToUse);
   }
 
   const addSupplier = () => {
     supplier.value = initSupplier();
-    supplier.value.customerId = currentCustomer?.value.id ?? null;
+    supplier.value.customerId = currentCustomer.value?.id ?? null;
     openSupplierForm.value = true;
   }
 
   const getSupplier = async (suppplierId) => {
     supplier.value = await supplierService.getById(suppplierId);
-    openSupplierForm.value = true; 
+    openSupplierForm.value = true;
   }
 
   const handleSave = async () => {

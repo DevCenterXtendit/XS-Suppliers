@@ -34,12 +34,12 @@ const useSocietyFi = () => {
   }
 
   const getCustomers = async () => {
-    customers.value = await customerService.getAll();
+    customers.value = await customerService.getList();
   }
 
   const getSocietiesGl = async () => {
     const idToUse = currentCustomer?.value?.id ?? null;
-    societiesGl.value = await societyGlService.getAll(idToUse);
+    societiesGl.value = await societyGlService.getList(idToUse);
   }
 
   const getSocietiesFiBySocietyGl = async () => {

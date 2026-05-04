@@ -7,6 +7,11 @@ const getAll = async (customerId) => {
   return await api.get(`${baseEndpoint}${params}`);
 };
 
+const getList = async (customerId) => {
+  const params = customerId ? `?customerId=${customerId}` : '';
+  return await api.get(`${baseEndpoint}/list${params}`);
+}
+
 const getById = async (id) => {
   const response = await api.get(`${baseEndpoint}/${id}`);
   return response;
@@ -25,6 +30,7 @@ const update = async (societyGl) => {
 export const societyGlService = {
     add,
     getAll,
+    getList,
     getById,
     update,
 };

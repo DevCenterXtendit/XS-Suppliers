@@ -1,3 +1,8 @@
+import { h } from 'vue'
+import { RouterView } from 'vue-router'
+
+const RouterLayout = { render: () => h(RouterView) }
+
 const routes = [
   {
     name: 'mainLayout',
@@ -20,7 +25,7 @@ const routes = [
           {
             name: 'companyStructureLayout',
             path: 'company-structure',
-            component: () => import('layouts/RouterLayout.vue'),
+            component: RouterLayout,
             children: [
               {
                 name: 'companyStructure',
@@ -104,6 +109,11 @@ const routes = [
             name: 'invoiceUpdate',
             path: 'invoice-update',
             component: () => import ('src/pages/private/CustomerInvoicesPage.vue'),
+          },
+          {
+            name: 'supplierInvoices',
+            path: 'supplier-invoices',
+            component: () => import ('src/pages/private/SupplierInvoicesPage.vue'),
           },
         ]
       }

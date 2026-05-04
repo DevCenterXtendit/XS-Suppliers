@@ -48,7 +48,7 @@ export default [
   // Seguridad
   {
     name: 'security',
-    icon: 'security', 
+    icon: 'security',
     label: 'Seguridad',
     children: [
       {
@@ -68,7 +68,7 @@ export default [
   // Configuración Proveedores
   {
     name: 'supplierConfiguration',
-    icon: 'diversity_3', 
+    icon: 'diversity_3',
     label: 'Configuración Proveedores',
     children: [
       {
@@ -98,17 +98,17 @@ export default [
         to: '/supplier-management/suppliers'
       },
       {
-        name: 'suppliers',
+        name: 'customerInvoices',
         icon: 'description',
         label: 'Actualizar Facturas',
         to: '/supplier-management/invoice-update',
-      }
+      },
+      {
+        name: 'supplierInvoices',
+        icon: 'description',
+        label: 'Estatus Facturas',
+        to: '/supplier-management/supplier-invoices'
+      },
     ]
   },
-  {
-    name: 'viewInvoices',
-    icon: 'invoice-text-plus-outline',
-    label: 'Visualizar Facturas',
-    to: '/',
-  }
 ];

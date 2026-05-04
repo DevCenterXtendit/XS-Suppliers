@@ -1,71 +1,70 @@
 <template>
   <q-page class="q-pa-md column no-wrap">
     <AppBreadcrumbs />
-    <div class="row items-center justify-between q-mb-md">
-      <div class="text-h6">Facturas</div>
-      <q-btn
-        @click="openTemplateDialog = !openTemplateDialog"
-        color="primary"
-        icon="upload"
-        label="Actualizar facturas"
-        no-caps
-        unelevated
-      />
+    <div class="row items-center justify-between q-mb-sm">
+      <div class="text-h6">Mis Facturas</div>
     </div>
 
     <!-- Cards de estadísticas -->
     <div class="row q-col-gutter-md">
       <div class="col-12 col-sm-6 col-md-3">
-        <q-card flat class="bg-blue-2">
-          <q-card-section>
-            <div class="text-overline text-grey-8">Total: <strong>{{ stats.total }}</strong></div>
-            <div class="text-h4 text-blue text-weight-bold">
-              {{ formatCurrency(stats.totalAmount) }}
+        <q-card flat>
+          <q-card-section class="row items-center no-wrap">
+            <q-icon name="receipt_long" size="40px" color="blue" class="q-mr-md" />
+            <div>
+              <div class="text-caption text-grey-7">Total Facturas</div>
+              <div class="text-h5 text-weight-bold">{{ stats.total }}</div>
+              <div class="text-caption text-grey-6">{{ formatCurrency(stats.totalAmount) }}</div>
             </div>
-            <div class="text-caption text-grey-8">Suma de importes</div>
           </q-card-section>
         </q-card>
       </div>
 
       <div class="col-12 col-sm-6 col-md-3">
-        <q-card flat class="bg-green-2">
-          <q-card-section>
-            <div class="text-overline text-grey-8">Pagadas: <strong>{{ stats.paid }}</strong></div>
-            <div class="text-h4 text-positive text-weight-bold">
-              {{ formatCurrency(stats.paidAmount) }}
+        <q-card flat>
+          <q-card-section class="row items-center no-wrap">
+            <q-icon name="check_circle" size="40px" color="positive" class="q-mr-md" />
+            <div>
+              <div class="text-caption text-grey-7">Cobradas</div>
+              <div class="text-h5 text-weight-bold text-positive">{{ stats.paid }}</div>
+              <div class="text-caption text-grey-6">{{ formatCurrency(stats.paidAmount) }}</div>
             </div>
-            <div class="text-caption text-grey-8">Suma de importes</div>
           </q-card-section>
         </q-card>
       </div>
 
       <div class="col-12 col-sm-6 col-md-3">
-        <q-card flat class="bg-orange-2">
-          <q-card-section>
-            <div class="text-overline text-grey-8">Programadas: <strong>{{ stats.scheduled }}</strong></div>
-            <div class="text-h4 text-warning text-weight-bold">
-              {{ formatCurrency(stats.scheduledAmount) }}
+        <q-card flat>
+          <q-card-section class="row items-center no-wrap">
+            <q-icon name="schedule" size="40px" color="orange" class="q-mr-md" />
+            <div>
+              <div class="text-caption text-grey-7">Programadas</div>
+              <div class="text-h5 text-weight-bold text-orange">{{ stats.scheduled }}</div>
+              <div class="text-caption text-grey-6">{{ formatCurrency(stats.scheduledAmount) }}</div>
             </div>
-            <div class="text-caption text-grey-8">Suma de importes</div>
           </q-card-section>
         </q-card>
       </div>
 
       <div class="col-12 col-sm-6 col-md-3">
-        <q-card flat class="bg-red-2">
-          <q-card-section>
-            <div class="text-overline text-grey-8">Canceladas: <strong>{{ stats.cancelled }}</strong></div>
-            <div class="text-h4 text-negative text-weight-bold">
-              {{ formatCurrency(stats.cancelledAmount) }}
+        <q-card flat>
+          <q-card-section class="row items-center no-wrap">
+            <q-icon name="cancel" size="40px" color="negative" class="q-mr-md" />
+            <div>
+              <div class="text-caption text-grey-7">Canceladas</div>
+              <div class="text-h5 text-weight-bold text-negative">{{ stats.cancelled }}</div>
+              <div class="text-caption text-grey-6">{{ formatCurrency(stats.cancelledAmount) }}</div>
             </div>
-            <div class="text-caption text-grey-8">Suma de importes</div>
           </q-card-section>
         </q-card>
       </div>
     </div>
 
     <!-- Filtros y acciones -->
-    <q-card flat class="q-pa-md q-my-md">
+    <q-card 
+      flat 
+      class="q-pa-md q-my-md"
+    >
       <div class="row q-col-gutter-sm">
         <div class="col-12 col-sm-6 col-md-4 q-pr-sm">
           <q-select
@@ -95,6 +94,7 @@
         </div>
       </div>
     </q-card>
+
     <!-- Tabla de facturas -->
     <q-card
       flat
@@ -107,7 +107,7 @@
         :rows="filteredInvoices"
         color="secondary"
         flat
-        row-key="id"
+        row-key="externalId"
         class="col"
       >
         <template v-slot:body-cell-status="props">
@@ -130,27 +130,25 @@
             {{ formatDate(props.row.receivedDate) }}
           </q-td>
         </template>
+
+        <template v-slot:body-cell-actualPaymentDate="props">
+          <q-td :props="props">
+            {{ formatDate(props.row.actualPaymentDate) }}
+          </q-td>
+        </template>
       </q-table>
     </q-card>
   </q-page>
-  <upload-template />
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-//composables
+
 import useCustomerInvoices from 'src/core/composables/customerInvoces/useCustomerInvoices';
 import invoiceStatusList from 'src/core/constants/invoice-status-list';
-
-//components
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
-import UploadTemplate from 'src/components/CustomerInvoices/UploadTemplate.vue';
 
-const {
-  invoices,
-  openTemplateDialog,
-  getInvoices
-} = useCustomerInvoices();
+const { invoices, getInvoices } = useCustomerInvoices();
 
 const initialPagination = {
   rowsPerPage: 10,
@@ -161,14 +159,10 @@ const filterStatus = ref(null);
 
 const columns = [
   { name: 'externalId', label: 'ID', align: 'left', field: 'externalId', sortable: true },
-  { name: 'receiver', label: 'PROVEEDOR', align: 'left', field: 'receiver', sortable: true },
-  { name: 'status', label: 'ESTATUS', align: 'center', field: 'statusId', sortable: true },
-  { name: 'receivedDate', label: 'FECHA DE RECEPCIÓN', align: 'center', field: 'receivedDate', sortable: true },
-  // { name: 'actualPaymentDate', label: 'FECHA DE PAGO', align: 'center', field: 'actualPaymentDate', sortable: true },
   { name: 'number', label: 'FOLIO', align: 'left', field: 'number', sortable: true },
-  // { name: 'bankConfirmationNumber', label: 'CONFIRMACIÓN BANCARIA', align: 'left', field: 'bankConfirmationNumber', sortable: true },
-  // { name: 'withHoldingAmount', label: 'RETENCIÓN', align: 'left', field: 'withHoldingAmount', sortable: true },
-  // { name: 'paymentComplementUUID', label: 'COMPLEMENTO DE PAGO', align: 'left', field: 'paymentComplementUUID', sortable: true },
+  { name: 'receivedDate', label: 'FECHA DE RECEPCIÓN', align: 'center', field: 'receivedDate', sortable: true },
+  { name: 'actualPaymentDate', label: 'FECHA DE PAGO', align: 'center', field: 'actualPaymentDate', sortable: true },
+  { name: 'status', label: 'ESTATUS', align: 'center', field: 'statusId', sortable: true },
   { name: 'total', label: 'MONTO', align: 'right', field: 'total', sortable: true },
 ];
 
@@ -178,7 +172,6 @@ const onSelectedStatus = (selectedStatus) => {
   filterStatus.value = selectedStatus;
 };
 
-// Métodos auxiliares
 const getStatusColor = (statusId) => {
   const colors = {
     1: 'warning',
@@ -197,7 +190,7 @@ const getStatusLabel = (statusId) => {
   return statusById[statusId]?.name || 'Sin estatus';
 };
 
-const formatCurrency = (amount) => {
+const formatCurrency = (amount = 0) => {
   return new Intl.NumberFormat('es-MX', {
     style: 'currency',
     currency: 'MXN'
@@ -223,7 +216,6 @@ const formatDate = (dateValue) => {
     year: 'numeric',
   }).format(parsedDate);
 };
-// Métodos auxiliares
 
 // Computed para estadísticas
 const stats = computed(() => {

@@ -3,12 +3,14 @@ import { api } from 'boot/axios';
 const baseEndpoint = "/users"
 
 const getAll = (companyTypeId) => {
-  if(!companyTypeId){
-    return api.get(baseEndpoint);
-  }else{
-    return api.get(`${baseEndpoint}?companyTypeId=${companyTypeId}`);
-  }
+  const params = companyTypeId ? `?companyTypeId=${companyTypeId}` : '';
+  return api.get(`${baseEndpoint}${params}`);
 };
+
+// const getAllActive = (companyTypeId) => {
+//   const params = companyTypeId ? `?companyTypeId=${companyTypeId}` : '';
+//   return api.get(`${baseEndpoint}/list${params}`);
+// };
 
 const getById = (userId) => {
   return api.get(`${baseEndpoint}/${userId}`);
@@ -32,6 +34,7 @@ const remove = async (userId) => {
 
 export const userService = {
   getAll,
+  // getAllActive,
   getById,
   add,
   update,

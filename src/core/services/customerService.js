@@ -7,7 +7,7 @@ const getAll = async () => {
   return response;
 };
 
-const getAllActive = async () => {
+const getList = async () => {
   const response = await api.get(`${baseEndpoint}/list`);
   return response;
 };
@@ -30,7 +30,7 @@ const update = async (customer) => {
 export const customerService = {
     add,
     getAll,
-    getAllActive,
+    getList,
     getById,
     update,
 };

@@ -39,18 +39,18 @@
           </q-form>
         </q-step>
         <template v-slot:navigation>
-          <div class="row justify-end q-px-md">
+          <div class="row justify-end">
             <q-btn
-              v-if="step > 1"
+              v-if="!isFirstStep"
               flat
-              color="primary"
               @click="$refs.stepper.previous()"
               label="Regresar"
+              class="q-mr-sm"
             />
             <q-btn
               @click="onNext"
               color="primary"
-              :label="step === groupedFields[groupedFields.length-1].order ? 'Guardar' : 'Continuar'"
+              :label="isLastStep ? 'Guardar' : 'Continuar'"
             />
           </div>
         </template>
@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import DialogForm from 'src/components/common/DialogForm.vue';
 import useSupplier from 'src/core/composables/supplier/useSupplier';
 import supplierFieldTypeList from 'src/core/constants/supplierField-type-list';
@@ -94,7 +94,7 @@ const onNext = async () => {
   //   return;
   // }
 
-  if(step.value == groupedFields.value[groupedFields.value.length-1].order)
+  if(isLastStep.value)
     await setFieldValues();
   else
     stepper.value.next();
@@ -121,7 +121,7 @@ const groupedFields = computed(() => {
     if (!map.has(key)) {
       map.set(key, {
         id: typeInfo?.id ?? 0,
-        name: typeInfo.name ?? 'Otros',
+        name: typeInfo?.name ?? 'Otros',
         text: typeInfo?.text ?? 'Otros',
         icon: typeInfo?.icon ?? 'Unknow',
         order: typeInfo?.order ?? 99,
@@ -131,8 +131,17 @@ const groupedFields = computed(() => {
 
     map.get(key).items.push(field);
   });
+  
   // Respetar el order para mejorar la customización
- return Array.from(map.values()).sort((a, b) => a.order - b.order);
+  return Array.from(map.values()).sort((a, b) => a.order - b.order);
+});
+
+const isFirstStep = computed(() => {
+  return groupedFields.value.length > 0 && step.value === groupedFields.value[0].order;
+});
+
+const isLastStep = computed(() => {
+  return groupedFields.value.length > 0 && step.value === groupedFields.value[groupedFields.value.length - 1].order;
 });
 
 const currentForm = computed(() => {
@@ -143,5 +152,11 @@ const currentForm = computed(() => {
   return formRefs.value?.[currentGroup.order] ?? null
 })
 
+// Inicializar step con el primer grupo cuando cambie groupedFields
+watch(groupedFields, (newGroupedFields) => {
+  if (newGroupedFields.length > 0 && step.value === 1) {
+    step.value = newGroupedFields[0].order;
+  }
+}, { immediate: true });
 
 </script>

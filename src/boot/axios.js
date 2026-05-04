@@ -32,7 +32,6 @@ export default defineBoot(({ app }) => {
 //interceptor for request
 api.interceptors.request.use(
   (config) => {
-    console.log('CONFIGURACIÓN DE LA PETICIÓN: ', config);
 
     config.requiresAuth = config.requiresAuth !== false;
 

@@ -3,11 +3,13 @@ import { api } from 'boot/axios';
 const baseEndpoint = "/Suppliers"
 
 const getAll = async (customerId) => {
-  if(!customerId){
-    return api.get(baseEndpoint)
-  }else{
-    return api.get(`${baseEndpoint}?customerId=${customerId}`);
-  }
+  const params = customerId ? `?customerId=${customerId}` : '';
+  return api.get(`${baseEndpoint}${params}`);
+};
+
+const getList = async (customerId) => {
+  const params = customerId ? `?customerId=${customerId}` : '';
+  return api.get(`${baseEndpoint}/list${params}`);
 };
 
 const getById = async (id) => {
@@ -23,7 +25,7 @@ const update = async (supplier) => {
 }
 
 const getDetailById = async (id) => {
-   return await api.get(`${baseEndpoint}/${id}/detail`); 
+   return await api.get(`${baseEndpoint}/${id}/detail`);
 }
 
 const setFieldsValue = async (id, fields) => {
@@ -36,8 +38,9 @@ const setStatus = async (id, status) => {
 
 export const supplierService = {
     getAll,
+    getList,
     getById,
-    add, 
+    add,
     update,
     getDetailById,
     setFieldsValue,

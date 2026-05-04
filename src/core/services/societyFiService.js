@@ -6,6 +6,10 @@ const getAllBySocietyGl = async (societyGlId) => {
    return api.get(`SocietiesGl/${societyGlId}${baseEndpoint}`);
 };
 
+const getListBySocietyGl = async (societyGlId) => {
+  return api.get(`SocietiesGl/${societyGlId}${baseEndpoint}/list`);
+}
+
 const getById = async (id) => {
   return api.get(`${baseEndpoint}/${id}`);
 };
@@ -21,6 +25,7 @@ const update = async (societyFi) => {
 export const societyFiService = {
     add,
     getAllBySocietyGl,
+    getListBySocietyGl,
     getById,
     update,
 };

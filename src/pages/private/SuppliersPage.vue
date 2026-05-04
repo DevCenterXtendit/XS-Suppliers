@@ -27,7 +27,7 @@
       <div class="col-4 col-sm-6">
         <q-btn
           @click="addSupplier"
-          :disable="currentCustomer == null"
+          :disable="currentCustomer == null && userLogged.companyType == COMPANY_TYPE.XTENDIT"
           color="primary"
           icon="add_circle_outline"
           label="Añadir"

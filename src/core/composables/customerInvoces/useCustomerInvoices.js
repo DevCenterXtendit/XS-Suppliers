@@ -14,11 +14,16 @@ const useCustomerInvoices = () => {
     errors: []
   });
 
+  const getInvoices = async () => {
+    invoices.value = await invoiceService.getAll();
+   }
+
   const sendTemplate = async () => {
     if (!template.value) return;
 
     const response = await invoiceService.uploadTemplate(template.value);
     uploadResult.value = response;
+    getInvoices();
   }
 
   return {
@@ -26,6 +31,7 @@ const useCustomerInvoices = () => {
     openTemplateDialog,
     template,
     uploadResult,
+    getInvoices,
     sendTemplate,
   }
 }

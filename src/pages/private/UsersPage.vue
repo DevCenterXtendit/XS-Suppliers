@@ -5,20 +5,37 @@
     <q-card
       v-if="userLogged.companyType == COMPANY_TYPE.XTENDIT"
       flat
-      class="row q-pa-md q-mt-sm"
+      class="q-pa-md q-mt-sm"
     >
-      <div class="col-12 col-sm-6 col-md-4">
-        <q-select
-            v-model="companyType"
-            @update:model-value="onSelectedCompanyType"
-            :options="companyTypes"
+      <div class="row q-col-gutter-sm">
+        <div class="col-12 col-sm-6 col-md-4">
+          <q-select
+              v-model="companyType"
+              @update:model-value="onSelectedCompanyType"
+              :options="companyTypes"
+              dense
+              label="Seleccione tipo de usuario"
+              map-options
+              outlined
+              option-label="name"
+            >
+          </q-select>
+        </div>
+        <!-- <div class="col-12 col-sm-6 col-md-4">
+          <q-select
+            v-model="customerToAssign"
+            v-if="companyType?.name == COMPANY_TYPE.SUPPLIER"
+            @update:model-value="onSelectedCustomerToAssign"
+            :options="customers"
             dense
-            label="Seleccione tipo de usuario"
+            emit-value
+            label="Seleccione cliente a asignar al proveedor"
             map-options
             outlined
             option-label="name"
           >
-        </q-select>
+          </q-select>
+        </div> -->
       </div>
     </q-card>
     <q-card flat
@@ -111,11 +128,10 @@ import { COMPANY_TYPE } from 'src/core/constants/company-type';
 const {
   companyType,
   users,
+  customers,
+  suppliers,
   roles,
-  companies,
   getUsers,
-  getCompanies,
-  getRoles,
   getUser,
   addUser,
   setUserStatus,
@@ -136,17 +152,13 @@ const columns = [
   { name: 'name', label: 'NOMBRE', align: 'left', field: 'name'},
   { name: 'lastNames', label: 'APELLIDOS', align: 'left', field: 'lastNames'},
   { name: 'email', label: 'EMAIL', align: "left", field: 'email' },
-  { name: 'status', label: 'ESTATUS', align: "center", field: 'isActive' },
+  { name: 'status', label: 'ACTIVO', align: "center", field: 'isActive' },
   { name: 'actions', label: 'ACCIONES', align: 'center' , field: 'actions'},
 ]
 
 const onSelectedCompanyType = async () => {
   await Promise.all([
     getUsers(),
-    getRoles(),
-    // TODO: hay que revisar si es necesario cargar esto aquí ya que solo se necesita al
-    // agregar un usuario
-    getCompanies()
   ]);;
 }
 
@@ -154,16 +166,16 @@ onMounted(async () => {
   if (userLogged.companyType !== COMPANY_TYPE.XTENDIT){
     await Promise.all([
       getUsers(),
-      getRoles()
     ])
   }
 });
 
 onUnmounted(() => {
   companyType.value = null;
-  companies.value = [];
-  roles.value = [];
   users.value = [];
+  customers.value = [];
+  suppliers.value = [];
+  roles.value = [];
 });
 
 </script>

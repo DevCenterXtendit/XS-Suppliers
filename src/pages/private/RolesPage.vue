@@ -5,6 +5,7 @@
     <q-card
       flat
       class="row q-pa-md q-mt-sm"
+      v-if="userLogged.companyType == COMPANY_TYPE.XTENDIT"
     >
       <div class="col-12 col-sm-6 col-md-4">
         <q-select
@@ -112,6 +113,16 @@ import { onBeforeRouteLeave } from 'vue-router';
 //componenents
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 import roleForm from 'src/components/role/roleForm.vue';
+
+//composables
+import useAuth from 'src/core/composables/auth/useAuth';
+
+//constants
+import { COMPANY_TYPE } from 'src/core/constants/company-type';
+
+const {
+  userLogged
+} = useAuth()
 
 const {
   roleType,
