@@ -146,6 +146,7 @@ import { ref, computed, onMounted } from 'vue';
 
 import useCustomerInvoices from 'src/core/composables/customerInvoces/useCustomerInvoices';
 import invoiceStatusList from 'src/core/constants/invoice-status-list';
+import { getInvoiceStatusColor, getInvoiceStatusLabel } from 'src/core/utils/invoice-status-helper';
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
 
 const { invoices, getInvoices } = useCustomerInvoices();
@@ -166,29 +167,13 @@ const columns = [
   { name: 'total', label: 'MONTO', align: 'right', field: 'total', sortable: true },
 ];
 
-const statusById = Object.fromEntries(invoiceStatusList.map((status) => [status.id, status]));
-
 const onSelectedStatus = (selectedStatus) => {
   filterStatus.value = selectedStatus;
 };
 
-const getStatusColor = (statusId) => {
-  const colors = {
-    1: 'warning',
-    2: 'info',
-    3: 'warning',
-    4: 'positive',
-    5: 'negative',
-    6: 'negative',
-    7: 'negative',
-    8: 'warning',
-  };
-  return colors[statusId] || 'grey';
-};
-
-const getStatusLabel = (statusId) => {
-  return statusById[statusId]?.name || 'Sin estatus';
-};
+// Usar helpers estándar de estatus
+const getStatusColor = getInvoiceStatusColor;
+const getStatusLabel = getInvoiceStatusLabel;
 
 const formatCurrency = (amount = 0) => {
   return new Intl.NumberFormat('es-MX', {

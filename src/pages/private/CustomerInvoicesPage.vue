@@ -2,7 +2,7 @@
   <q-page class="q-pa-md column no-wrap">
     <AppBreadcrumbs />
     <div class="row items-center justify-between q-mb-md">
-      <div class="text-h6">Facturas</div>
+      <div class="text-h6">Actualizar Facturas</div>
       <q-btn
         @click="openTemplateDialog = !openTemplateDialog"
         color="primary"
@@ -18,7 +18,10 @@
       <div class="col-12 col-sm-6 col-md-3">
         <q-card flat class="bg-blue-2">
           <q-card-section>
-            <div class="text-overline text-grey-8">Total: <strong>{{ stats.total }}</strong></div>
+            <div class="row items-center q-mb-xs">
+              <q-icon name="receipt_long" size="20px" color="blue" class="q-mr-xs" />
+              <div class="text-overline text-grey-8">Total: <strong>{{ stats.total }}</strong></div>
+            </div>
             <div class="text-h4 text-blue text-weight-bold">
               {{ formatCurrency(stats.totalAmount) }}
             </div>
@@ -30,7 +33,10 @@
       <div class="col-12 col-sm-6 col-md-3">
         <q-card flat class="bg-green-2">
           <q-card-section>
-            <div class="text-overline text-grey-8">Pagadas: <strong>{{ stats.paid }}</strong></div>
+            <div class="row items-center q-mb-xs">
+              <q-icon name="check_circle" size="20px" color="positive" class="q-mr-xs" />
+              <div class="text-overline text-grey-8">Pagadas: <strong>{{ stats.paid }}</strong></div>
+            </div>
             <div class="text-h4 text-positive text-weight-bold">
               {{ formatCurrency(stats.paidAmount) }}
             </div>
@@ -42,7 +48,10 @@
       <div class="col-12 col-sm-6 col-md-3">
         <q-card flat class="bg-orange-2">
           <q-card-section>
-            <div class="text-overline text-grey-8">Programadas: <strong>{{ stats.scheduled }}</strong></div>
+            <div class="row items-center q-mb-xs">
+              <q-icon name="schedule" size="20px" color="warning" class="q-mr-xs" />
+              <div class="text-overline text-grey-8">Programadas: <strong>{{ stats.scheduled }}</strong></div>
+            </div>
             <div class="text-h4 text-warning text-weight-bold">
               {{ formatCurrency(stats.scheduledAmount) }}
             </div>
@@ -54,7 +63,10 @@
       <div class="col-12 col-sm-6 col-md-3">
         <q-card flat class="bg-red-2">
           <q-card-section>
-            <div class="text-overline text-grey-8">Canceladas: <strong>{{ stats.cancelled }}</strong></div>
+            <div class="row items-center q-mb-xs">
+              <q-icon name="cancel" size="20px" color="negative" class="q-mr-xs" />
+              <div class="text-overline text-grey-8">Canceladas: <strong>{{ stats.cancelled }}</strong></div>
+            </div>
             <div class="text-h4 text-negative text-weight-bold">
               {{ formatCurrency(stats.cancelledAmount) }}
             </div>
@@ -141,6 +153,7 @@ import { ref, computed, onMounted } from 'vue';
 //composables
 import useCustomerInvoices from 'src/core/composables/customerInvoces/useCustomerInvoices';
 import invoiceStatusList from 'src/core/constants/invoice-status-list';
+import { getInvoiceStatusColor, getInvoiceStatusLabel } from 'src/core/utils/invoice-status-helper';
 
 //components
 import AppBreadcrumbs from 'src/components/common/AppBreadcrumbs.vue';
@@ -172,30 +185,13 @@ const columns = [
   { name: 'total', label: 'MONTO', align: 'right', field: 'total', sortable: true },
 ];
 
-const statusById = Object.fromEntries(invoiceStatusList.map((status) => [status.id, status]));
-
 const onSelectedStatus = (selectedStatus) => {
   filterStatus.value = selectedStatus;
 };
 
-// Métodos auxiliares
-const getStatusColor = (statusId) => {
-  const colors = {
-    1: 'warning',
-    2: 'info',
-    3: 'warning',
-    4: 'positive',
-    5: 'negative',
-    6: 'negative',
-    7: 'negative',
-    8: 'warning',
-  };
-  return colors[statusId] || 'grey';
-};
-
-const getStatusLabel = (statusId) => {
-  return statusById[statusId]?.name || 'Sin estatus';
-};
+// Métodos auxiliares - usar helpers estándar de estatus
+const getStatusColor = getInvoiceStatusColor;
+const getStatusLabel = getInvoiceStatusLabel;
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('es-MX', {

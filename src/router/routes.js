@@ -116,6 +116,12 @@ const routes = [
             component: () => import ('src/pages/private/SupplierInvoicesPage.vue'),
           },
         ]
+      },
+      //Dashboard Clientes
+      {
+        name: 'customerDashboard',
+        path: 'customer-dashboard',
+        component: () => import ('src/pages/private/CustomerDashboardPage.vue'),
       }
     ]
   },

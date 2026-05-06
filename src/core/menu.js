@@ -111,4 +111,11 @@ export default [
       },
     ]
   },
+  // Dashboard Cliente
+  {
+    name: 'dashboard',
+    icon: 'home',
+    label: 'Dashboard Cliente',
+    to: '/customer-dashboard'
+  },
 ];
